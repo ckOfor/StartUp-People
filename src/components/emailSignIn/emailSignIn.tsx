@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 
-import { Form, Icon, Layout, Tooltip, Input, Checkbox, Button } from "antd";
+import { Form, Icon, Layout, Input, Button } from "antd";
 
 import { history } from "../../redux/store";
-import { signInWithEmailParams } from "../../redux/auth/auth.actions.d";
+import { signInWithEmailParams, socialAuthParams } from "../../redux/auth/auth.actions.d";
 
 import backgroundImage from '../../assets/bkImg.png';
 
@@ -14,8 +14,8 @@ interface StateProps {
 interface Props {
   form: any
   sigInUserWithEmailAsync: (data: signInWithEmailParams) => void
-  // googleAuthAsync: (userType: string) => void
-  // facebookAuthAsync: (userType: string) => void
+  googleAuthAsync: (data: socialAuthParams) => void
+  facebookAuthAsync: (data: socialAuthParams) => void
 }
 
 type ContainerProps = Props & StateProps
@@ -25,30 +25,12 @@ export const EmailSignIn: React.FC = (props: ContainerProps) => {
   
   const imageUrl = backgroundImage;
   const {
-    isLoading, sigInUserWithEmailAsync
+    isLoading, sigInUserWithEmailAsync, googleAuthAsync, facebookAuthAsync
   } = props;
   const { getFieldDecorator } = props.form;
-  const [confirmDirty] = useState(false);
-  const [hasAgreed, setHasAgreed] = useState(false);
   const [authType, setAuthType] = useState('email')
-  const [userType] = useState('professional')
-  
-  const validateToNextPassword = (rule: any, value: any, callback: () => void) => {
-    const form = props.form;
-    if (value && confirmDirty) {
-      form.validateFields(['confirmPassword'], { force: true });
-    }
-    callback();
-  }
-  
-  const compareToFirstPassword = (rule: any, value: any, callback: { (arg0: string): void; (): void; }) => {
-    const form = props.form;
-    if (value && value !== form.getFieldValue('password')) {
-      callback("Passwords do not match");
-    } else {
-      callback();
-    }
-  }
+  const [userType] = useState('company')
+  const [actionType] = useState('signIn')
   
   /**
    * handleSignUpWithEmail
@@ -72,7 +54,11 @@ export const EmailSignIn: React.FC = (props: ContainerProps) => {
    */
   const handleSignInWithGoogle = (e: any) => {
     e.preventDefault();
-    // googleAuthAsync(userType)
+    const values = {
+      userType,
+      actionType
+    }
+    googleAuthAsync(values)
   }
   
   /**
@@ -82,7 +68,11 @@ export const EmailSignIn: React.FC = (props: ContainerProps) => {
    */
   const handleSignInWithFacebook = (e: any) => {
     e.preventDefault();
-    // facebookAuthAsync(userType)
+    const values = {
+      userType,
+      actionType
+    }
+    facebookAuthAsync(values)
   }
   
   return (
@@ -337,8 +327,6 @@ export const EmailSignIn: React.FC = (props: ContainerProps) => {
                   }, {
                     min: 6,
                     message: '6 or more digits',
-                  }, {
-                    validator: validateToNextPassword,
                   }],
                 })(
                   <Input.Password

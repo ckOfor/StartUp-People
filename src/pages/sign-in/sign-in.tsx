@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import { Dispatch } from "redux";
 
 import { ApplicationState } from "../../redux/reducers";
-import { sigInUserWithEmailAsync } from "../../redux/auth";
-import { signInWithEmailParams } from "../../redux/auth/auth.actions.d";
+import { facebookAuthAsync, googleAuthAsync, sigInUserWithEmailAsync } from "../../redux/auth";
+import { signInWithEmailParams, socialAuthParams } from "../../redux/auth/auth.actions.d";
 
 import EmailSignInView from "../../components/emailSignIn";
 
@@ -15,8 +15,8 @@ interface StateProps {
 
 interface DispatchProps {
   sigInUserWithEmailAsync: (data: signInWithEmailParams) => void
-  // googleAuthAsync: (userType: string) => void
-  // facebookAuthAsync: (userType: string) => void
+  googleAuthAsync: (data: socialAuthParams) => void
+  facebookAuthAsync: (data: socialAuthParams) => void
 }
 
 type ContainerProps = DispatchProps & StateProps
@@ -33,8 +33,8 @@ class EmailSignIn extends React.Component<ContainerProps, StateProps> {
 
 const mapDispatchToProps = (dispatch: Dispatch<any>): DispatchProps => ({
   sigInUserWithEmailAsync: (data: signInWithEmailParams) => dispatch(sigInUserWithEmailAsync(data)),
-  // googleAuthAsync: (userType: string) => dispatch(googleAuthAsync(userType)),
-  // facebookAuthAsync: (userType: string) => dispatch(facebookAuthAsync(userType)),
+  googleAuthAsync: (data: socialAuthParams) => dispatch(googleAuthAsync(data)),
+  facebookAuthAsync: (data: socialAuthParams) => dispatch(facebookAuthAsync(data)),
 });
 
 let MapStateToProps: (state: ApplicationState) => StateProps;

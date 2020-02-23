@@ -6,6 +6,11 @@ export interface signUpWithEmailParams {
   userType: string
 }
 
+export interface socialAuthParams {
+  userType: string
+  actionType: string
+}
+
 export interface signInWithEmailParams {
   email: string
   password: string

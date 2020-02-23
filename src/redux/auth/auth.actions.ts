@@ -7,8 +7,9 @@ import app from "../../config/Firebase";
 
 import { ApplicationState } from "../reducers";
 import {
-  signUpWithEmailParams, signInWithEmailParams
+  signUpWithEmailParams, signInWithEmailParams, socialAuthParams
 } from './auth.actions.d';
+
 import {
   EMAIL_AUTH_SIGN_UP,
   EMAIL_AUTH_SIGN_UP_FAILURE,
@@ -220,7 +221,7 @@ export const signInWithGoogleSuccess = () => ({
 /**
  * Thunks
  */
-export const googleAuthAsync = (userType: string): ThunkAction<
+export const googleAuthAsync = (data: socialAuthParams): ThunkAction<
   void,
   ApplicationState,
   null,
@@ -232,6 +233,8 @@ export const googleAuthAsync = (userType: string): ThunkAction<
   const hide = message.loading('Loading...', 0);
   
   const provider = new firebase.auth.GoogleAuthProvider();
+  
+  const { userType } = data
   
   try {
     firebase
@@ -253,7 +256,7 @@ export const googleAuthAsync = (userType: string): ThunkAction<
         dispatch(savePictureURL(result.user.photoURL.toString()))
         
         // console.log(result.user.uid)
-        firebase.auth().signOut().then(function() {
+        firebase.auth().signOut().then(() => {
           // Sign-out successful.
         }).catch(function(error) {
           // An error happened.
@@ -288,7 +291,7 @@ export const signInWithFacebookSuccess = () => ({
 /**
  * Thunks
  */
-export const facebookAuthAsync = (userType: string): ThunkAction<
+export const facebookAuthAsync = (data: socialAuthParams): ThunkAction<
   void,
   ApplicationState,
   null,
@@ -300,6 +303,8 @@ export const facebookAuthAsync = (userType: string): ThunkAction<
   const hide = message.loading('Loading...', 0);
   
   const provider = new firebase.auth.FacebookAuthProvider();
+  
+  const { userType } = data
   
   try {
     firebase
@@ -321,7 +326,7 @@ export const facebookAuthAsync = (userType: string): ThunkAction<
         dispatch(savePictureURL(result.user.photoURL.toString()))
         
         // console.log(result.user.uid)
-        firebase.auth().signOut().then(function() {
+        firebase.auth().signOut().then(() => {
           // Sign-out successful.
         }).catch(function(error) {
           // An error happened.

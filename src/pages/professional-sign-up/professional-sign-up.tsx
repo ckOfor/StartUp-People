@@ -5,7 +5,7 @@ import { Dispatch } from "redux";
 
 import { ApplicationState } from "../../redux/reducers";
 import {createUserWithEmailAsync, facebookAuthAsync, googleAuthAsync} from "../../redux/auth";
-import {signUpWithEmailParams } from "../../redux/auth/auth.actions.d";
+import { signUpWithEmailParams, socialAuthParams } from "../../redux/auth/auth.actions.d";
 
 import ProfessionalSignUpView from "../../components/professionalSignUp/professionalSignUp";
 
@@ -15,8 +15,8 @@ interface StateProps {
 
 interface DispatchProps {
   createUserWithEmailAsync: (data: signUpWithEmailParams) => void
-  googleAuthAsync: (userType: string) => void
-  facebookAuthAsync: (userType: string) => void
+  googleAuthAsync: (data: socialAuthParams) => void
+  facebookAuthAsync: (data: socialAuthParams) => void
 }
 
 type ContainerProps = DispatchProps & StateProps
@@ -33,8 +33,8 @@ class ProfessionalSignUp extends React.Component<ContainerProps, StateProps> {
 
 const mapDispatchToProps = (dispatch: Dispatch<any>): DispatchProps => ({
   createUserWithEmailAsync: (data: signUpWithEmailParams) => dispatch(createUserWithEmailAsync(data)),
-  googleAuthAsync: (userType: string) => dispatch(googleAuthAsync(userType)),
-  facebookAuthAsync: (userType: string) => dispatch(facebookAuthAsync(userType)),
+  googleAuthAsync: (data: socialAuthParams) => dispatch(googleAuthAsync(data)),
+  facebookAuthAsync: (data: socialAuthParams) => dispatch(facebookAuthAsync(data)),
 });
 
 let MapStateToProps: (state: ApplicationState) => StateProps;
