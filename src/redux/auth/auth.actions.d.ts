@@ -6,6 +6,11 @@ export interface signUpWithEmailParams {
   userType: string
 }
 
+export interface signInWithEmailParams {
+  email: string
+  password: string
+}
+
 export interface AuthState {
   token: null,
   userExists: boolean

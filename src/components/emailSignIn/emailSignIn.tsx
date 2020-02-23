@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Form, Icon, Layout, Tooltip, Input, Checkbox, Button } from "antd";
 
 import { history } from "../../redux/store";
-import { signUpWithEmailParams } from "../../redux/auth/auth.actions.d";
+import { signInWithEmailParams } from "../../redux/auth/auth.actions.d";
 
 import backgroundImage from '../../assets/bkImg.png';
 
@@ -13,19 +13,19 @@ interface StateProps {
 
 interface Props {
   form: any
-  createUserWithEmailAsync: (data: signUpWithEmailParams) => void
-  googleAuthAsync: (userType: string) => void
-  facebookAuthAsync: (userType: string) => void
+  sigInUserWithEmailAsync: (data: signInWithEmailParams) => void
+  // googleAuthAsync: (userType: string) => void
+  // facebookAuthAsync: (userType: string) => void
 }
 
 type ContainerProps = Props & StateProps
 
 // @ts-ignore
-export const ProfessionalSignUp: React.FC = (props: ContainerProps) => {
+export const EmailSignIn: React.FC = (props: ContainerProps) => {
   
   const imageUrl = backgroundImage;
   const {
-    isLoading, createUserWithEmailAsync, googleAuthAsync, facebookAuthAsync
+    isLoading, sigInUserWithEmailAsync
   } = props;
   const { getFieldDecorator } = props.form;
   const [confirmDirty] = useState(false);
@@ -58,14 +58,9 @@ export const ProfessionalSignUp: React.FC = (props: ContainerProps) => {
   const handleSignUpWithEmail = (e: any) => {
     e.preventDefault();
     setAuthType('email')
-    props.form.validateFields(["fullName", "email", "password", "confirmPassword"], (err: any, values: any) => {
+    props.form.validateFields(["email", "password"], (err: any, values: any) => {
       if (!err) {
-        const newValues = {
-          ...values,
-          authType,
-          userType
-        }
-        createUserWithEmailAsync(newValues)
+        sigInUserWithEmailAsync(values)
       }
     });
   }
@@ -77,7 +72,7 @@ export const ProfessionalSignUp: React.FC = (props: ContainerProps) => {
    */
   const handleSignInWithGoogle = (e: any) => {
     e.preventDefault();
-    googleAuthAsync(userType)
+    // googleAuthAsync(userType)
   }
   
   /**
@@ -87,7 +82,7 @@ export const ProfessionalSignUp: React.FC = (props: ContainerProps) => {
    */
   const handleSignInWithFacebook = (e: any) => {
     e.preventDefault();
-    facebookAuthAsync(userType)
+    // facebookAuthAsync(userType)
   }
   
   return (
@@ -103,7 +98,7 @@ export const ProfessionalSignUp: React.FC = (props: ContainerProps) => {
         backgroundRepeat: 'no-repeat',
       }}
     >
-  
+      
       <div
         className="adminSignInPageApp"
         style={{
@@ -113,7 +108,7 @@ export const ProfessionalSignUp: React.FC = (props: ContainerProps) => {
           justifyContent: 'center',
         }}
       >
-  
+        
         <div
           className="adminSignInPageApp"
           style={{
@@ -124,7 +119,7 @@ export const ProfessionalSignUp: React.FC = (props: ContainerProps) => {
             flexDirection: 'column'
           }}
         >
-  
+          
           <div
             style={{
               display: 'flex',
@@ -132,7 +127,7 @@ export const ProfessionalSignUp: React.FC = (props: ContainerProps) => {
               justifyContent: 'space-between'
             }}
           >
-  
+            
             <Icon
               onClick={() => {
                 setTimeout(() => {
@@ -150,7 +145,7 @@ export const ProfessionalSignUp: React.FC = (props: ContainerProps) => {
                 />
               )}
             />
-  
+            
             <div
               style={{
                 display: 'flex',
@@ -160,7 +155,7 @@ export const ProfessionalSignUp: React.FC = (props: ContainerProps) => {
                 width:  window.innerWidth < 500 ? '100%' : '20%',
               }}
             >
-    
+              
               <Button
                 onClick={handleSignInWithFacebook}
                 style={{
@@ -171,7 +166,7 @@ export const ProfessionalSignUp: React.FC = (props: ContainerProps) => {
                   backgroundColor: '#3b5998',
                   fontFamily: 'Rockwell',
                 }}
-                disabled={isLoading || !hasAgreed}
+                disabled={isLoading}
               >
                 <Icon
                   type="facebook"
@@ -181,7 +176,7 @@ export const ProfessionalSignUp: React.FC = (props: ContainerProps) => {
                   }}
                 />
               </Button>
-    
+              
               <Button
                 onClick={handleSignInWithGoogle}
                 style={{
@@ -192,7 +187,7 @@ export const ProfessionalSignUp: React.FC = (props: ContainerProps) => {
                   backgroundColor: '#DB4437',
                   fontFamily: 'Rockwell',
                 }}
-                disabled={isLoading || !hasAgreed}
+                disabled={isLoading}
               >
                 <Icon
                   type="google"
@@ -203,9 +198,9 @@ export const ProfessionalSignUp: React.FC = (props: ContainerProps) => {
                 />
               </Button>
             </div>
-            
+          
           </div>
-  
+          
           <div
             className="adminSignInPageApp"
             style={{
@@ -218,7 +213,7 @@ export const ProfessionalSignUp: React.FC = (props: ContainerProps) => {
               flexDirection: "column"
             }}
           >
-  
+            
             <h1
               style={{
                 color: '#433a59',
@@ -227,8 +222,27 @@ export const ProfessionalSignUp: React.FC = (props: ContainerProps) => {
                 width: '85%',
               }}
             >
-              Join StartUp-People today to get matched with companies.
-    
+              Welcome back, Please Sign In.
+              <h6
+                style={{
+                  color: '#767676',
+                  fontFamily: 'Rockwell',
+                  marginTop: '5%'
+                }}
+              >
+                Get in touch with professionals, view messages, save and edit your profile and more. Don't have an account? Create as a <a
+                onClick={() => history.push('/')}
+                href="/professional/create"
+              >
+                Professional
+              </a> or <a
+                onClick={() => history.push('/')}
+                href="/company/create"
+              >
+                Company
+              </a>
+              </h6>
+              
               <div
                 style={{
                   display: 'flex',
@@ -243,11 +257,11 @@ export const ProfessionalSignUp: React.FC = (props: ContainerProps) => {
                     marginTop: '5%'
                   }}
                 >
-                  What is your
+                  Enter is your
                 </h6>
-  
+                
                 &nbsp;
-  
+                
                 <h6
                   style={{
                     color: '#767676',
@@ -256,65 +270,11 @@ export const ProfessionalSignUp: React.FC = (props: ContainerProps) => {
                     fontWeight: 'bold'
                   }}
                 >
-                  full name?
-                </h6>
-              </div>
-  
-  
-              <Form.Item
-                style={{
-                  width: window.innerWidth < 500 ? '100%' : '70%',
-                }}
-              >
-                {getFieldDecorator('fullName', {
-                  rules: [{
-                    min: 1,
-                    message: 'Please enter your full name'
-                  }, {
-                    required: true,
-                    pattern: new RegExp(/\s/),
-                    message: "e.g Jane Doe"
-                  }],
-                })(
-                  <Input
-                    name={'fullName'}
-                    disabled={isLoading}
-                    allowClear
-                    placeholder="Jane Doe"
-                  />
-                )}
-              </Form.Item>
-  
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: "row",
-                  // justifyContent: 'space-evenly'
-                }}
-              >
-                <h6
-                  style={{
-                    color: '#767676',
-                    fontFamily: 'Rockwell',
-                  }}
-                >
-                  What is your
-                </h6>
-    
-                &nbsp;
-    
-                <h6
-                  style={{
-                    color: '#767676',
-                    fontFamily: 'Rockwell',
-                    fontWeight: 'bold'
-                  }}
-                >
                   email?
                 </h6>
               </div>
-  
-  
+              
+              
               <Form.Item
                 style={{
                   width: window.innerWidth < 500 ? '100%' : '70%',
@@ -334,7 +294,7 @@ export const ProfessionalSignUp: React.FC = (props: ContainerProps) => {
                     placeholder="jane@doe.com " />
                 )}
               </Form.Item>
-  
+              
               <div
                 style={{
                   display: 'flex',
@@ -350,9 +310,9 @@ export const ProfessionalSignUp: React.FC = (props: ContainerProps) => {
                 >
                   Enter your
                 </h6>
-    
+                
                 &nbsp;
-    
+                
                 <h6
                   style={{
                     color: '#767676',
@@ -363,8 +323,8 @@ export const ProfessionalSignUp: React.FC = (props: ContainerProps) => {
                   password
                 </h6>
               </div>
-  
-  
+              
+              
               <Form.Item
                 style={{
                   width: window.innerWidth < 500 ? '100%' : '70%',
@@ -390,83 +350,9 @@ export const ProfessionalSignUp: React.FC = (props: ContainerProps) => {
                   />
                 )}
               </Form.Item>
-  
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: "row",
-                  // justifyContent: 'space-evenly'
-                }}
-              >
-                <h6
-                  style={{
-                    color: '#767676',
-                    fontFamily: 'Rockwell',
-                  }}
-                >
-                  Confirm your
-                </h6>
-    
-                &nbsp;
-    
-                <h6
-                  style={{
-                    color: '#767676',
-                    fontFamily: 'Rockwell',
-                    fontWeight: 'bold'
-                  }}
-                >
-                  password
-                </h6>
-              </div>
-  
-  
-              <Form.Item
-                style={{
-                  width: window.innerWidth < 500 ? '100%' : '70%',
-                }}
-              >
-                {getFieldDecorator('confirmPassword', {
-                  rules: [{
-                    required: true, message: 'Confirm your password!',
-                  }, {
-                    validator: compareToFirstPassword,
-                  }],
-                })(
-                  <Input.Password
-                    name={'confirmPassword'}
-                    disabled={isLoading}
-                    autoFocus
-                    allowClear
-                    type="password"
-                    placeholder="**********"
-                  />
-                )}
-              </Form.Item>
-  
-  
-              <Form.Item>
-                {getFieldDecorator('hasRead', {
-                  valuePropName: 'checked',
-                  onChange: (value: any) => setHasAgreed(value.target.checked),
-                  rules: [{
-                    required: true,
-                    message: 'Please confirm you have read our T&C.',
-                  }]
-                })(
-                  <Checkbox
-                    // value={hasAgreed}
-                  >I have read the <a
-                    target="_blank"
-                    href="/tandc"
-                  >
-                    terms and conditions
-                  </a>
-                  </Checkbox>
-                )}
-              </Form.Item>
-  
-  
+              
+              
+              
               <Form.Item>
                 <Button
                   style={{
@@ -475,26 +361,21 @@ export const ProfessionalSignUp: React.FC = (props: ContainerProps) => {
                     marginLeft: 50
                   }}
                   size={'large'}
-                  disabled={isLoading || !hasAgreed}
+                  disabled={isLoading}
                   htmlType="submit"
                   className="login-form-button"
                   onClick={handleSignUpWithEmail}
                 >
-                  Sign Up
-                </Button> Or <a
-                onClick={() => history.push('/manage')}
-                href="/manage"
-              >
-                Sign In
-              </a>
+                  Sign In
+                </Button>
               </Form.Item>
-              
-              
+            
+            
             </h1>
           </div>
-  
+        
         </div>
-  
+        
         <div
           className="adminSignInPageApp"
           style={{
@@ -506,7 +387,7 @@ export const ProfessionalSignUp: React.FC = (props: ContainerProps) => {
             backgroundColor: '#F06827'
           }}
         >
-  
+          
           <img
             style={{
               height: '40%',
@@ -514,18 +395,18 @@ export const ProfessionalSignUp: React.FC = (props: ContainerProps) => {
             }}
             src={require('../../assets/professional.png')}
           />
-          
+        
         </div>
-        
-        
+      
+      
       
       </div>
-      
-  
+    
+    
     </Layout>
   )
 }
 
-const ProfessionalSignUpView = Form.create()(ProfessionalSignUp)
+const EmailSignInView = Form.create()(EmailSignIn)
 
-export default ProfessionalSignUpView
+export default EmailSignInView

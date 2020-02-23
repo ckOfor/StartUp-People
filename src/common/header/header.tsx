@@ -105,7 +105,12 @@ export const HeaderPage: React.FC = (props: ContainerProps) => {
   
           <Menu.Item
             key="3"
-            // onClick={() => showRavrModal('logIn')}
+            onClick={() => {
+              setTimeout(() => {
+                history.push('/manage')
+                window.location.reload();
+              }, 1000)
+            }}
           >
             <Icon
               type="login"
@@ -136,7 +141,12 @@ export const HeaderPage: React.FC = (props: ContainerProps) => {
     
           <Menu.Item
             key="5"
-            // onClick={() => showRavrModal('logIn')}
+            onClick={() => {
+              setTimeout(() => {
+                history.push('/manage')
+                window.location.reload();
+              }, 1000)
+            }}
           >
             <Icon
               type="login"

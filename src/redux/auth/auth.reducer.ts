@@ -1,6 +1,7 @@
 import { AuthState, AuthTypes } from '../auth/auth.actions.d';
 
 import {
+  EMAIL_AUTH_SIGN_IN, EMAIL_AUTH_SIGN_IN_FAILURE, EMAIL_AUTH_SIGN_IN_SUCCESS,
   EMAIL_AUTH_SIGN_UP,
   EMAIL_AUTH_SIGN_UP_FAILURE,
   EMAIL_AUTH_SIGN_UP_SUCCESS,
@@ -77,6 +78,7 @@ function authReducer(state = INITIAL_STATE, action: AuthTypes): AuthState {
       };
     
     case EMAIL_AUTH_SIGN_UP:
+    case EMAIL_AUTH_SIGN_IN:
     case FACEBOOK_AUTH:
     case GOOGLE_AUTH:
     case SEND_EMAIL_VERIFICATION_LINK:
@@ -87,6 +89,8 @@ function authReducer(state = INITIAL_STATE, action: AuthTypes): AuthState {
   
     case EMAIL_AUTH_SIGN_UP_FAILURE:
     case EMAIL_AUTH_SIGN_UP_SUCCESS:
+    case EMAIL_AUTH_SIGN_IN_FAILURE:
+    case EMAIL_AUTH_SIGN_IN_SUCCESS:
     case FACEBOOK_AUTH_FAILURE:
     case FACEBOOK_AUTH_SUCCESS:
     case GOOGLE_AUTH_FAILURE:

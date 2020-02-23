@@ -7,7 +7,7 @@ import app from "../../config/Firebase";
 
 import { ApplicationState } from "../reducers";
 import {
-  signUpWithEmailParams
+  signUpWithEmailParams, signInWithEmailParams
 } from './auth.actions.d';
 import {
   EMAIL_AUTH_SIGN_UP,
@@ -29,7 +29,7 @@ import {
   SAVE_PICTURE_URL,
   SEND_EMAIL_VERIFICATION_LINK,
   SEND_EMAIL_VERIFICATION_LINK_FAILURE,
-  SEND_EMAIL_VERIFICATION_LINK_SUCCESS
+  SEND_EMAIL_VERIFICATION_LINK_SUCCESS, EMAIL_AUTH_SIGN_IN, EMAIL_AUTH_SIGN_IN_SUCCESS, EMAIL_AUTH_SIGN_IN_FAILURE
 } from './auth.types'
 
 export const saveUserId = (payload: string) => ({
@@ -147,6 +147,63 @@ export const createUserWithEmailAsync = (data: signUpWithEmailParams): ThunkActi
     showNotification("Error!", error.toString(), "error");
   }
 }
+
+
+export const signInWithEmail = () => ({
+  type: EMAIL_AUTH_SIGN_IN
+});
+
+export const signInWithEmailFailure = () => ({
+  type: EMAIL_AUTH_SIGN_IN_FAILURE
+});
+
+export const signInWithEmailSuccess = () => ({
+  type: EMAIL_AUTH_SIGN_IN_SUCCESS
+});
+
+/**
+ * Thunks
+ */
+export const sigInUserWithEmailAsync = (data: signInWithEmailParams): ThunkAction<
+  void,
+  ApplicationState,
+  null,
+  Action<any>
+  > => async (dispatch, getState) => {
+  console.log(data)
+  dispatch(signInWithEmail())
+  
+  const hide = message.loading('Loading...', 0);
+  const { email, password } = data
+  
+  try {
+    app
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(result => {
+        console.log(result)
+        setTimeout(hide, 2500);
+        
+        // @ts-ignore
+        dispatch(saveUserId(result.user.uid.toString()))
+        dispatch(saveAuthEmail(email))
+        
+        dispatch(signInWithEmailSuccess())
+      })
+      .catch(error => {
+        dispatch(signInWithEmailFailure())
+        setTimeout(hide, 2500);
+        console.log(error)
+        showNotification("Error!", error.toString(), "error");
+      });
+  } catch (error) {
+    console.log(error)
+    dispatch(signInWithEmailFailure())
+    setTimeout(hide, 2500);
+    showNotification("Error!", error.toString(), "error");
+  }
+}
+
 
 export const signInWithGoogle = () => ({
   type: GOOGLE_AUTH
