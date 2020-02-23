@@ -1,12 +1,12 @@
 // react
-import React, { useState } from 'react';
+import React from 'react';
 
 import { Layout, Form, Menu, Icon } from 'antd';
+
 import { history } from '../../../src/redux/store';
 
 const { Header } = Layout;
 const { SubMenu } = Menu;
-
 
 interface StateProps {
 
@@ -92,7 +92,12 @@ export const HeaderPage: React.FC = (props: ContainerProps) => {
         >
           <Menu.Item
             key="2"
-            onClick={() => history.push('/professional/create')}
+            onClick={() => {
+              setTimeout(() => {
+                history.push('/professional/create')
+                window.location.reload();
+              }, 1000)
+            }}
           >
             <Icon
               type="user-add"
