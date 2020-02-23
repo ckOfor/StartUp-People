@@ -3,8 +3,10 @@ import React, { useState } from 'react';
 import { Form, Icon, Layout, Tooltip, Input, Checkbox, Button } from "antd";
 
 import { history } from "../../redux/store";
+import { signUpWithEmailParams } from "../../redux/auth/auth.actions.d";
 
 import backgroundImage from '../../assets/bkImg.png';
+import {facebookAuthAsync} from "../../redux/auth";
 
 interface StateProps {
   isLoading: boolean
@@ -12,18 +14,25 @@ interface StateProps {
 
 interface Props {
   form: any
+  createUserWithEmailAsync: (data: signUpWithEmailParams) => void
+  googleAuthAsync: (userType: string) => void
+  facebookAuthAsync: (userType: string) => void
 }
 
 type ContainerProps = Props & StateProps
 
 // @ts-ignore
 export const ProfessionalSignUp: React.FC = (props: ContainerProps) => {
+  
   const imageUrl = backgroundImage;
-  const { isLoading } = props;
+  const {
+    isLoading, createUserWithEmailAsync, googleAuthAsync, facebookAuthAsync
+  } = props;
   const { getFieldDecorator } = props.form;
   const [confirmDirty] = useState(false);
   const [hasAgreed, setHasAgreed] = useState(false);
   const [authType, setAuthType] = useState('email')
+  const [userType] = useState('professional')
   
   const validateToNextPassword = (rule: any, value: any, callback: () => void) => {
     const form = props.form;
@@ -43,23 +52,43 @@ export const ProfessionalSignUp: React.FC = (props: ContainerProps) => {
   }
   
   /**
-   * handleSignUpSubmit
+   * handleSignUpWithEmail
    *
    * @param e
    */
-  const handleSignUpSubmit = (e: any) => {
+  const handleSignUpWithEmail = (e: any) => {
     e.preventDefault();
     setAuthType('email')
     props.form.validateFields(["fullName", "email", "password", "confirmPassword"], (err: any, values: any) => {
       if (!err) {
         const newValues = {
           ...values,
-          authType
+          authType,
+          userType
         }
-        console.log(newValues)
-        // onSubmit(values)
+        createUserWithEmailAsync(newValues)
       }
     });
+  }
+  
+  /**
+   * handleSignInWithGoogle
+   *
+   * @param e
+   */
+  const handleSignInWithGoogle = (e: any) => {
+    e.preventDefault();
+    googleAuthAsync(userType)
+  }
+  
+  /**
+   * handleSignInWithFacebook
+   *
+   * @param e
+   */
+  const handleSignInWithFacebook = (e: any) => {
+    e.preventDefault();
+    facebookAuthAsync(userType)
   }
   
   return (
@@ -134,6 +163,7 @@ export const ProfessionalSignUp: React.FC = (props: ContainerProps) => {
             >
     
               <Button
+                onClick={handleSignInWithFacebook}
                 style={{
                   color: '#fff',
                   width: 50,
@@ -153,6 +183,7 @@ export const ProfessionalSignUp: React.FC = (props: ContainerProps) => {
               </Button>
     
               <Button
+                onClick={handleSignInWithGoogle}
                 style={{
                   color: '#fff',
                   width: 50,
@@ -452,7 +483,7 @@ export const ProfessionalSignUp: React.FC = (props: ContainerProps) => {
                   disabled={isLoading || !hasAgreed}
                   htmlType="submit"
                   className="login-form-button"
-                  onClick={handleSignUpSubmit}
+                  onClick={handleSignUpWithEmail}
                 >
                   Sign Up
                 </Button> Or <a

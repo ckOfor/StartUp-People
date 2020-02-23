@@ -1,13 +1,4 @@
-export interface SocialParams {
-  fullName: string
-  email: string
-  password: string
-  pictureURL?: string
-  authType: string
-  userType: string
-}
-
-export interface EmailParams {
+export interface signUpWithEmailParams {
   fullName: string
   email: string
   password: string
@@ -17,15 +8,17 @@ export interface EmailParams {
 
 export interface AuthState {
   token: null,
-  userExists: false,
-  phoneNumber: "",
-  countryCode: "+234",
-  email: "",
-  fullName: "",
-  password: "",
-  authType: "",
-  uid: "",
-  pictureURL: "",
+  userExists: boolean
+  phoneNumber: string
+  countryCode: string
+  email: string
+  fullName: string
+  password: string
+  passwordModal: boolean
+  userType: string
+  authType: string
+  uid: string
+  pictureURL: string
   loading: boolean
 }
 

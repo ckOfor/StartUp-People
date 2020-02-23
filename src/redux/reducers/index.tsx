@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 import { connectRouter } from 'connected-react-router'
-import authReducer from './auth';
+import authReducer from '../auth/auth.reducer';
 
 export interface ApplicationState {
   nav: any
