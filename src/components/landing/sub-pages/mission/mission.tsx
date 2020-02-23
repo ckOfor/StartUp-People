@@ -30,7 +30,7 @@ export const Mission: React.FC = (props: ContainerProps) => {
       className="adminSignInPageApp"
       style={{
         display: 'flex',
-        minHeight: '90vh',
+        minHeight: '70vh',
         width: window.innerWidth < 500 ? '100%' : '60%',
         justifyContent: 'center',
       }}
@@ -68,14 +68,13 @@ export const Mission: React.FC = (props: ContainerProps) => {
                fontFamily: 'Rockwell',
              }}
            >
-             - G.A Okoronkwo C.E.O
+             - Ada O. C.E.O
            </h6>
          </h1>
   
          {
            window.innerWidth < 500 && (
              <Button
-               // onClick={handleRequestQuoteModalOk}
                style={{
                  color: '#fff',
                  width: 120,
@@ -97,9 +96,8 @@ export const Mission: React.FC = (props: ContainerProps) => {
       
       <div
         style={{
-          minHeight: '90vh',
+          minHeight: '70vh',
           margin: "auto",
-          // width: '40%',
           width: window.innerWidth < 500 ? '0%' : '40%',
           backgroundSize: 'cover',
           backgroundRepeat: 'no-repeat',

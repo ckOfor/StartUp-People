@@ -17,3 +17,8 @@ const App: React.FC = () => {
 }
 
 export default App;
+
+// .ant-menu-horizontal > .ant-menu-submenu-selected {
+//   color: #F06827;
+//   border-bottom: 2px solid #F06827;
+// }
