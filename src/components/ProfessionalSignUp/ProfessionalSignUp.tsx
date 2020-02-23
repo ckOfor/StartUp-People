@@ -7,7 +7,7 @@ import { history } from "../../redux/store";
 import backgroundImage from '../../assets/bkImg.png';
 
 interface StateProps {
-
+  isLoading: boolean
 }
 
 interface Props {
@@ -19,8 +19,11 @@ type ContainerProps = Props & StateProps
 // @ts-ignore
 export const ProfessionalSignUp: React.FC = (props: ContainerProps) => {
   const imageUrl = backgroundImage;
+  const { isLoading } = props;
   const { getFieldDecorator } = props.form;
   const [confirmDirty] = useState(false);
+  const [hasAgreed, setHasAgreed] = useState(false);
+  const [authType, setAuthType] = useState('email')
   
   const validateToNextPassword = (rule: any, value: any, callback: () => void) => {
     const form = props.form;
@@ -37,6 +40,26 @@ export const ProfessionalSignUp: React.FC = (props: ContainerProps) => {
     } else {
       callback();
     }
+  }
+  
+  /**
+   * handleSignUpSubmit
+   *
+   * @param e
+   */
+  const handleSignUpSubmit = (e: any) => {
+    e.preventDefault();
+    setAuthType('email')
+    props.form.validateFields(["fullName", "email", "password", "confirmPassword"], (err: any, values: any) => {
+      if (!err) {
+        const newValues = {
+          ...values,
+          authType
+        }
+        console.log(newValues)
+        // onSubmit(values)
+      }
+    });
   }
   
   return (
@@ -78,6 +101,7 @@ export const ProfessionalSignUp: React.FC = (props: ContainerProps) => {
             style={{
               display: 'flex',
               flexDirection: 'row',
+              justifyContent: 'space-between'
             }}
           >
   
@@ -98,6 +122,55 @@ export const ProfessionalSignUp: React.FC = (props: ContainerProps) => {
                 />
               )}
             />
+  
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-around',
+                width:  window.innerWidth < 500 ? '100%' : '20%',
+              }}
+            >
+    
+              <Button
+                style={{
+                  color: '#fff',
+                  width: 50,
+                  height: 50,
+                  borderRadius: 25,
+                  backgroundColor: '#3b5998',
+                  fontFamily: 'Rockwell',
+                }}
+              >
+                <Icon
+                  type="facebook"
+                  style={{
+                    fontSize: '20px',
+                    marginTop: 5
+                  }}
+                />
+              </Button>
+    
+              <Button
+                style={{
+                  color: '#fff',
+                  width: 50,
+                  height: 50,
+                  borderRadius: 25,
+                  backgroundColor: '#DB4437',
+                  fontFamily: 'Rockwell',
+                }}
+              >
+                <Icon
+                  type="google"
+                  style={{
+                    fontSize: '20px',
+                    marginTop: 5
+                  }}
+                />
+              </Button>
+            </div>
             
           </div>
   
@@ -173,7 +246,7 @@ export const ProfessionalSignUp: React.FC = (props: ContainerProps) => {
                 })(
                   <Input
                     name={'fullName'}
-                    // disabled={isLoading}
+                    disabled={isLoading}
                     allowClear
                     placeholder="Jane Doe"
                   />
@@ -225,7 +298,7 @@ export const ProfessionalSignUp: React.FC = (props: ContainerProps) => {
                   }],
                 })(
                   <Input
-                    // disabled={isLoading}
+                    disabled={isLoading}
                     name={'email'}
                     allowClear
                     placeholder="jane@doe.com " />
@@ -281,7 +354,7 @@ export const ProfessionalSignUp: React.FC = (props: ContainerProps) => {
                   }],
                 })(
                   <Input.Password
-                    // disabled={isLoading}
+                    disabled={isLoading}
                     name={'password'}
                     allowClear
                     type="password"
@@ -336,7 +409,7 @@ export const ProfessionalSignUp: React.FC = (props: ContainerProps) => {
                 })(
                   <Input.Password
                     name={'confirmPassword'}
-                    // disabled={isLoading}
+                    disabled={isLoading}
                     autoFocus
                     allowClear
                     type="password"
@@ -349,7 +422,7 @@ export const ProfessionalSignUp: React.FC = (props: ContainerProps) => {
               <Form.Item>
                 {getFieldDecorator('hasRead', {
                   valuePropName: 'checked',
-                  // onChange: (value: any) => hasReadTerms(value.target.checked),
+                  onChange: (value: any) => setHasAgreed(value.target.checked),
                   rules: [{
                     required: true,
                     message: 'Please confirm you have read our T&C.',
@@ -376,15 +449,15 @@ export const ProfessionalSignUp: React.FC = (props: ContainerProps) => {
                     marginLeft: 50
                   }}
                   size={'large'}
-                  // disabled={isLoading}
+                  disabled={isLoading || !hasAgreed}
                   htmlType="submit"
                   className="login-form-button"
-                  // onClick={(value) => hasAgreed ? handleSubmit(value) : handleNotSignedAgreement()}
+                  onClick={handleSignUpSubmit}
                 >
                   Sign Up
                 </Button> Or <a
                 onClick={() => history.push('/')}
-                href="/"
+                href="/manage"
               >
                 Sign In
               </a>

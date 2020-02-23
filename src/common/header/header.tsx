@@ -1,4 +1,3 @@
-// react
 import React from 'react';
 
 import { Layout, Form, Menu, Icon } from 'antd';
@@ -39,14 +38,13 @@ export const HeaderPage: React.FC = (props: ContainerProps) => {
           alignSelf: 'center',
           backgroundColor: 'transparent',
           borderColor: 'transparent',
-          
         }}
         overflowedIndicator={<Icon type="menu-fold"/>}
       >
   
         <Icon
           style={{
-            marginLeft: '18%',
+            marginLeft: '20%',
             marginRight: window.innerWidth < 1000 ? '0%' : '20%',
           }}
           onClick={() => window.location.reload()}
@@ -62,7 +60,7 @@ export const HeaderPage: React.FC = (props: ContainerProps) => {
         
         <Menu.Item
           key="0"
-          onClick={()=> window.open("mailto:hello@startup-people.com?subject=I have attached my  CV!", "_blank")}
+          onClick={()=> window.open("mailto:hellostartupteam@gmail.com?subject=I have attached my  CV!", "_blank")}
         >
           <Icon
             type="home"
@@ -72,7 +70,7 @@ export const HeaderPage: React.FC = (props: ContainerProps) => {
   
         <Menu.Item
           key="1"
-          onClick={()=> window.open("mailto:hello@startup-people.com?subject=I need Help!", "_blank")}
+          onClick={()=> window.open("mailto:hellostartupteam@gmail.com?subject=I need Help!", "_blank")}
         >
           <Icon
             type="home"

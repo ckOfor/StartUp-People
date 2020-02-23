@@ -102,7 +102,7 @@ export const Contact: React.FC = (props: ContainerProps) => {
                 width: 50,
                 height: 50,
                 borderRadius: 25,
-                backgroundColor: '#F06827',
+                backgroundColor: '#00acee',
                 fontFamily: 'Rockwell',
               }}
             >
@@ -110,7 +110,7 @@ export const Contact: React.FC = (props: ContainerProps) => {
                 type="twitter"
                 style={{
                   fontSize: '20px',
-                  marginTop: 8
+                  marginTop: 4
                 }}
               />
             </Button>
@@ -121,7 +121,7 @@ export const Contact: React.FC = (props: ContainerProps) => {
                 width: 50,
                 height: 50,
                 borderRadius: 25,
-                backgroundColor: '#F06827',
+                backgroundColor: '#3f729b',
                 fontFamily: 'Rockwell',
               }}
             >
@@ -129,7 +129,7 @@ export const Contact: React.FC = (props: ContainerProps) => {
                 type="instagram"
                 style={{
                   fontSize: '20px',
-                  marginTop: 8
+                  marginTop: 4
                 }}
               />
             </Button>
@@ -140,7 +140,7 @@ export const Contact: React.FC = (props: ContainerProps) => {
                 width: 50,
                 height: 50,
                 borderRadius: 25,
-                backgroundColor: '#F06827',
+                backgroundColor: '#0e76a8',
                 fontFamily: 'Rockwell',
               }}
             >
@@ -148,7 +148,7 @@ export const Contact: React.FC = (props: ContainerProps) => {
                 type="linkedin"
                 style={{
                   fontSize: '20px',
-                  marginTop: 8
+                  marginTop: 4
                 }}
               />
             </Button>
@@ -159,16 +159,16 @@ export const Contact: React.FC = (props: ContainerProps) => {
                 width: 50,
                 height: 50,
                 borderRadius: 25,
-                backgroundColor: '#F06827',
+                backgroundColor: '#DB4437',
                 fontFamily: 'Rockwell',
               }}
-              onClick={()=> window.open("mailto:hello@startup-people.com?subject=Hello StartUp-People", "_blank")}
+              onClick={()=> window.open("mailto:hellostartupteam@gmail.com?subject=Hello StartUp-People", "_blank")}
             >
               <Icon
                 type="mail"
                 style={{
                   fontSize: '20px',
-                  marginTop: 8
+                  marginTop: 4
                 }}
               />
             </Button>
@@ -179,7 +179,7 @@ export const Contact: React.FC = (props: ContainerProps) => {
                 width: 50,
                 height: 50,
                 borderRadius: 25,
-                backgroundColor: '#F06827',
+                backgroundColor: '#00aff0',
                 fontFamily: 'Rockwell',
               }}
             >
@@ -187,7 +187,7 @@ export const Contact: React.FC = (props: ContainerProps) => {
                 type="skype"
                 style={{
                   fontSize: '20px',
-                  marginTop: 8
+                  marginTop: 4
                 }}
               />
             </Button>
@@ -198,7 +198,7 @@ export const Contact: React.FC = (props: ContainerProps) => {
                 width: 50,
                 height: 50,
                 borderRadius: 25,
-                backgroundColor: '#F06827',
+                backgroundColor: '#075E54',
                 fontFamily: 'Rockwell',
               }}
             >
@@ -206,7 +206,7 @@ export const Contact: React.FC = (props: ContainerProps) => {
                 type="phone"
                 style={{
                   fontSize: '20px',
-                  marginTop: 8
+                  marginTop: 4
                 }}
               />
             </Button>

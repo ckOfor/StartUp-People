@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { LandingPage } from "./pages/landing-page";
 import { ProfessionalSignUpPage } from "./pages/professional-sign-up";
 
-import 'antd/dist/antd.css';
+import './antd.css';
 
 const App: React.FC = () => {
   return (
@@ -19,8 +19,3 @@ const App: React.FC = () => {
 }
 
 export default App;
-
-// .ant-menu-horizontal > .ant-menu-submenu-selected {
-//   color: #F06827;
-//   border-bottom: 2px solid #F06827;
-// }

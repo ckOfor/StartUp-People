@@ -67,7 +67,7 @@ export const Team: React.FC = (props: ContainerProps) => {
           {
             window.innerWidth < 500 && (
               <Button
-                onClick={()=> window.open("mailto:hello@startup-people.com?subject=I have attached my  CV!", "_blank")}
+                onClick={()=> window.open("mailto:hellostartupteam@gmail.com?subject=I have attached my  CV!", "_blank")}
                 style={{
                   color: '#fff',
                   width: 120,
