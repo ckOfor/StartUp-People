@@ -107,7 +107,7 @@ export const Core: React.FC = (props: ContainerProps) => {
               width: '100%',
             }}
           >
-            StartUp-People members are overwhelmingly satisfied with the benefits they receive – in fact, 95% say they recommend StartUp-People membership to colleagues. Here's why: ...
+            StartUp-People members are overwhelmingly satisfied with the benefits they receive – in fact, 95% say they recommend StartUp-People membership to colleagues. ...
           </h6>
     
         </div>

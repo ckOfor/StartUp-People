@@ -131,7 +131,12 @@ export const HeaderPage: React.FC = (props: ContainerProps) => {
         >
           <Menu.Item
             key="4"
-            // onClick={() => showRavrModal('signUp')}
+            onClick={() => {
+              setTimeout(() => {
+                history.push('/company/create')
+                window.location.reload();
+              }, 1000)
+            }}
           >
             <Icon
               type="user-add"

@@ -205,7 +205,6 @@ export const sigInUserWithEmailAsync = (data: signInWithEmailParams): ThunkActio
   }
 }
 
-
 export const signInWithGoogle = () => ({
   type: GOOGLE_AUTH
 });

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 
-import { Form, Icon, Layout, Input, Button } from "antd";
+import { Form, Icon, Layout, Tooltip, Input, Checkbox, Button } from "antd";
 
 import { history } from "../../redux/store";
-import { signInWithEmailParams, socialAuthParams } from "../../redux/auth/auth.actions.d";
+import { signUpWithEmailParams, socialAuthParams } from "../../redux/auth/auth.actions.d";
 
 import backgroundImage from '../../assets/bkImg.png';
 
@@ -13,7 +13,7 @@ interface StateProps {
 
 interface Props {
   form: any
-  sigInUserWithEmailAsync: (data: signInWithEmailParams) => void
+  createUserWithEmailAsync: (data: signUpWithEmailParams) => void
   googleAuthAsync: (data: socialAuthParams) => void
   facebookAuthAsync: (data: socialAuthParams) => void
 }
@@ -21,16 +21,35 @@ interface Props {
 type ContainerProps = Props & StateProps
 
 // @ts-ignore
-export const EmailSignIn: React.FC = (props: ContainerProps) => {
+export const CompanySignUp: React.FC = (props: ContainerProps) => {
   
   const imageUrl = backgroundImage;
   const {
-    isLoading, sigInUserWithEmailAsync, googleAuthAsync, facebookAuthAsync
+    isLoading, createUserWithEmailAsync, googleAuthAsync, facebookAuthAsync
   } = props;
   const { getFieldDecorator } = props.form;
+  const [confirmDirty] = useState(false);
+  const [hasAgreed, setHasAgreed] = useState(false);
   const [authType, setAuthType] = useState('email')
   const [userType] = useState('company')
-  const [actionType] = useState('signIn')
+  const [actionType] = useState('signUp')
+  
+  const validateToNextPassword = (rule: any, value: any, callback: () => void) => {
+    const form = props.form;
+    if (value && confirmDirty) {
+      form.validateFields(['confirmPassword'], { force: true });
+    }
+    callback();
+  }
+  
+  const compareToFirstPassword = (rule: any, value: any, callback: { (arg0: string): void; (): void; }) => {
+    const form = props.form;
+    if (value && value !== form.getFieldValue('password')) {
+      callback("Passwords do not match");
+    } else {
+      callback();
+    }
+  }
   
   /**
    * handleSignUpWithEmail
@@ -40,9 +59,14 @@ export const EmailSignIn: React.FC = (props: ContainerProps) => {
   const handleSignUpWithEmail = (e: any) => {
     e.preventDefault();
     setAuthType('email')
-    props.form.validateFields(["email", "password"], (err: any, values: any) => {
+    props.form.validateFields(["fullName", "email", "password", "confirmPassword"], (err: any, values: any) => {
       if (!err) {
-        sigInUserWithEmailAsync(values)
+        const newValues = {
+          ...values,
+          authType,
+          userType
+        }
+        createUserWithEmailAsync(newValues)
       }
     });
   }
@@ -100,7 +124,6 @@ export const EmailSignIn: React.FC = (props: ContainerProps) => {
       >
         
         <div
-          className="adminSignInPageApp"
           style={{
             display: 'flex',
             minHeight: '100vh',
@@ -135,59 +158,6 @@ export const EmailSignIn: React.FC = (props: ContainerProps) => {
                 />
               )}
             />
-            
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-around',
-                width:  window.innerWidth < 500 ? '100%' : '20%',
-              }}
-            >
-              
-              <Button
-                onClick={handleSignInWithFacebook}
-                style={{
-                  color: '#fff',
-                  width: 50,
-                  height: 50,
-                  borderRadius: 25,
-                  backgroundColor: '#3b5998',
-                  fontFamily: 'Rockwell',
-                }}
-                disabled={isLoading}
-              >
-                <Icon
-                  type="facebook"
-                  style={{
-                    fontSize: '20px',
-                    marginTop: 5
-                  }}
-                />
-              </Button>
-              
-              <Button
-                onClick={handleSignInWithGoogle}
-                style={{
-                  color: '#fff',
-                  width: 50,
-                  height: 50,
-                  borderRadius: 25,
-                  backgroundColor: '#DB4437',
-                  fontFamily: 'Rockwell',
-                }}
-                disabled={isLoading}
-              >
-                <Icon
-                  type="google"
-                  style={{
-                    fontSize: '20px',
-                    marginTop: 5
-                  }}
-                />
-              </Button>
-            </div>
           
           </div>
           
@@ -212,26 +182,7 @@ export const EmailSignIn: React.FC = (props: ContainerProps) => {
                 width: '85%',
               }}
             >
-              Welcome back, please sign in.
-              <h6
-                style={{
-                  color: '#767676',
-                  fontFamily: 'Rockwell',
-                  marginTop: '5%'
-                }}
-              >
-                Get in touch with professionals, view messages, save and edit your profile and more. Don't have an account? Create as a <a
-                onClick={() => history.push('/')}
-                href="/professional/create"
-              >
-                Professional
-              </a> or <a
-                onClick={() => history.push('/')}
-                href="/company/create"
-              >
-                Company
-              </a>
-              </h6>
+              Join StartUp-People and hire the best professionals to take your business to the next level.
               
               <div
                 style={{
@@ -247,7 +198,7 @@ export const EmailSignIn: React.FC = (props: ContainerProps) => {
                     marginTop: '5%'
                   }}
                 >
-                  Enter is your
+                  What is the name of your
                 </h6>
                 
                 &nbsp;
@@ -257,6 +208,60 @@ export const EmailSignIn: React.FC = (props: ContainerProps) => {
                     color: '#767676',
                     fontFamily: 'Rockwell',
                     marginTop: '5%',
+                    fontWeight: 'bold'
+                  }}
+                >
+                  company?
+                </h6>
+              </div>
+              
+              
+              <Form.Item
+                style={{
+                  width: window.innerWidth < 500 ? '100%' : '70%',
+                }}
+              >
+                {getFieldDecorator('fullName', {
+                  rules: [{
+                    min: 1,
+                    message: 'Please enter your full name'
+                  }, {
+                    required: true,
+                    pattern: new RegExp(/\s/),
+                    message: "e.g Jane Doe"
+                  }],
+                })(
+                  <Input
+                    name={'fullName'}
+                    disabled={isLoading}
+                    allowClear
+                    placeholder="Jane Doe"
+                  />
+                )}
+              </Form.Item>
+              
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: "row",
+                  // justifyContent: 'space-evenly'
+                }}
+              >
+                <h6
+                  style={{
+                    color: '#767676',
+                    fontFamily: 'Rockwell',
+                  }}
+                >
+                  What is your company's
+                </h6>
+                
+                &nbsp;
+                
+                <h6
+                  style={{
+                    color: '#767676',
+                    fontFamily: 'Rockwell',
                     fontWeight: 'bold'
                   }}
                 >
@@ -298,7 +303,7 @@ export const EmailSignIn: React.FC = (props: ContainerProps) => {
                     fontFamily: 'Rockwell',
                   }}
                 >
-                  Enter your
+                  Create
                 </h6>
                 
                 &nbsp;
@@ -327,6 +332,8 @@ export const EmailSignIn: React.FC = (props: ContainerProps) => {
                   }, {
                     min: 6,
                     message: '6 or more digits',
+                  }, {
+                    validator: validateToNextPassword,
                   }],
                 })(
                   <Input.Password
@@ -339,6 +346,80 @@ export const EmailSignIn: React.FC = (props: ContainerProps) => {
                 )}
               </Form.Item>
               
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: "row",
+                  // justifyContent: 'space-evenly'
+                }}
+              >
+                <h6
+                  style={{
+                    color: '#767676',
+                    fontFamily: 'Rockwell',
+                  }}
+                >
+                  Confirm
+                </h6>
+                
+                &nbsp;
+                
+                <h6
+                  style={{
+                    color: '#767676',
+                    fontFamily: 'Rockwell',
+                    fontWeight: 'bold'
+                  }}
+                >
+                  password
+                </h6>
+              </div>
+              
+              
+              <Form.Item
+                style={{
+                  width: window.innerWidth < 500 ? '100%' : '70%',
+                }}
+              >
+                {getFieldDecorator('confirmPassword', {
+                  rules: [{
+                    required: true, message: 'Confirm your password!',
+                  }, {
+                    validator: compareToFirstPassword,
+                  }],
+                })(
+                  <Input.Password
+                    name={'confirmPassword'}
+                    disabled={isLoading}
+                    autoFocus
+                    allowClear
+                    type="password"
+                    placeholder="**********"
+                  />
+                )}
+              </Form.Item>
+              
+              
+              <Form.Item>
+                {getFieldDecorator('hasRead', {
+                  valuePropName: 'checked',
+                  onChange: (value: any) => setHasAgreed(value.target.checked),
+                  rules: [{
+                    required: true,
+                    message: 'Please confirm you have read our T&C.',
+                  }]
+                })(
+                  <Checkbox
+                    // value={hasAgreed}
+                  >I have read the <a
+                    target="_blank"
+                    href="/tandc"
+                  >
+                    terms and conditions
+                  </a>
+                  </Checkbox>
+                )}
+              </Form.Item>
               
               
               <Form.Item>
@@ -349,13 +430,18 @@ export const EmailSignIn: React.FC = (props: ContainerProps) => {
                     marginLeft: 50
                   }}
                   size={'large'}
-                  disabled={isLoading}
+                  disabled={isLoading || !hasAgreed}
                   htmlType="submit"
                   className="login-form-button"
                   onClick={handleSignUpWithEmail}
                 >
-                  Sign In
-                </Button>
+                  Sign Up
+                </Button> Or <a
+                onClick={() => history.push('/manage')}
+                href="/manage"
+              >
+                Sign In
+              </a>
               </Form.Item>
             
             
@@ -372,7 +458,7 @@ export const EmailSignIn: React.FC = (props: ContainerProps) => {
             width: window.innerWidth < 500 ? '0%' : '50%',
             justifyContent: 'center',
             alignItems: 'center',
-            // backgroundColor: '#707E91'
+            backgroundColor: '#707E91'
           }}
         >
           
@@ -381,7 +467,7 @@ export const EmailSignIn: React.FC = (props: ContainerProps) => {
               height: '40%',
               width: '70%',
             }}
-            src={require('../../assets/welcome.png')}
+            src={require('../../assets/company.png')}
           />
         
         </div>
@@ -395,6 +481,6 @@ export const EmailSignIn: React.FC = (props: ContainerProps) => {
   )
 }
 
-const EmailSignInView = Form.create()(EmailSignIn)
+const CompanySignUpView = Form.create()(CompanySignUp)
 
-export default EmailSignInView
+export default CompanySignUpView

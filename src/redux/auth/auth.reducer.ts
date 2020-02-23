@@ -21,7 +21,6 @@ import {
   SEND_EMAIL_VERIFICATION_LINK_FAILURE, SEND_EMAIL_VERIFICATION_LINK_SUCCESS
 } from '../auth';
 
-
 const INITIAL_STATE: AuthState = {
   token: null,
   userExists: false,

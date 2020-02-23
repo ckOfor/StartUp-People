@@ -357,7 +357,7 @@ export const ProfessionalSignUp: React.FC = (props: ContainerProps) => {
                     fontFamily: 'Rockwell',
                   }}
                 >
-                  Enter your
+                  Create
                 </h6>
     
                 &nbsp;
