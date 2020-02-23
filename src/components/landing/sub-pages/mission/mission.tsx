@@ -68,7 +68,7 @@ export const Mission: React.FC = (props: ContainerProps) => {
                fontFamily: 'Rockwell',
              }}
            >
-             - Ada O. C.E.O
+             - Ada O.
            </h6>
          </h1>
   

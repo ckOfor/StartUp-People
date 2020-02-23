@@ -54,7 +54,7 @@ export const Core: React.FC = (props: ContainerProps) => {
             src={require('../../../../assets/findPeople.png')}
           />
   
-          <h1
+          <h6
             style={{
               color: '#767676',
               fontFamily: 'Rockwell',
@@ -63,7 +63,7 @@ export const Core: React.FC = (props: ContainerProps) => {
             }}
           >
             We've designed our Platform with the user in mind, which is why we've made it so easy to find professionals, and be found by service companies. ...
-          </h1>
+          </h6>
     
         </div>
   
@@ -99,7 +99,7 @@ export const Core: React.FC = (props: ContainerProps) => {
             src={require('../../../../assets/join.png')}
           />
   
-          <h1
+          <h6
             style={{
               color: '#767676',
               fontFamily: 'Rockwell',
@@ -108,7 +108,7 @@ export const Core: React.FC = (props: ContainerProps) => {
             }}
           >
             StartUp-People members are overwhelmingly satisfied with the benefits they receive – in fact, 95% say they recommend StartUp-People membership to colleagues. Here's why: ...
-          </h1>
+          </h6>
     
         </div>
   
@@ -143,7 +143,7 @@ export const Core: React.FC = (props: ContainerProps) => {
             src={require('../../../../assets/service.png')}
           />
       
-          <h1
+          <h6
             style={{
               color: window.innerWidth < 500 ? 'black' : '#767676',
               fontFamily: 'Rockwell',
@@ -152,7 +152,7 @@ export const Core: React.FC = (props: ContainerProps) => {
             }}
           >
             We offer the full spectrum of services to help organizations work better. Everything from creating standards of excellence, assessing how you’re doing, and helping you perform even better in future. ...
-          </h1>
+          </h6>
     
         </div>
   

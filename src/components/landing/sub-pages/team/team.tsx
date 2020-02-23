@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Layout, Button } from "antd";
+import {Layout, Button, Menu} from "antd";
 
 interface StateProps {
 
@@ -67,6 +67,7 @@ export const Team: React.FC = (props: ContainerProps) => {
           {
             window.innerWidth < 500 && (
               <Button
+                onClick={()=> window.open("mailto:hello@startup-people.com?subject=I have attached my  CV!", "_blank")}
                 style={{
                   color: '#fff',
                   width: 120,

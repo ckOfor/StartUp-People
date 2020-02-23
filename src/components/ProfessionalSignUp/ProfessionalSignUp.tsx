@@ -4,12 +4,6 @@ import { Layout } from "antd";
 
 import HeaderView from "../../common/header/header";
 
-import MissionView from "./sub-pages/mission/mission";
-import CoreView from "./sub-pages/core/core";
-import TeamView from "./sub-pages/team/team";
-import ContactView from "./sub-pages/contact/contact";
-import FounderView from "./sub-pages/founder/founder";
-
 import backgroundImage from '../../assets/bkImg.png';
 
 interface StateProps {
@@ -22,7 +16,7 @@ interface Props {
 
 type ContainerProps = Props & StateProps
 
-export const Landing: React.FC = (props: ContainerProps) => {
+export const ProfessionalSignUp: React.FC = (props: ContainerProps) => {
   const imageUrl = backgroundImage;
   
   return (
@@ -38,33 +32,13 @@ export const Landing: React.FC = (props: ContainerProps) => {
         backgroundRepeat: 'no-repeat',
       }}
     >
-  
+    
       <HeaderView />
-      
-      <div>
-        <MissionView />
-      </div>
   
-      <div>
-        <CoreView />
-      </div>
-  
-      <div>
-        <TeamView />
-      </div>
-  
-      <div>
-        <FounderView />
-      </div>
-  
-      <div>
-        <ContactView />
-      </div>
-      
     </Layout>
   )
 }
 
-const LandingView = Landing
+const ProfessionalSignUpView = ProfessionalSignUp
 
-export default LandingView
+export default ProfessionalSignUpView

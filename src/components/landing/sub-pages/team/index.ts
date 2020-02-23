@@ -1,2 +1,2 @@
-import teaam from './team';
-export default teaam;
+import team from './team';
+export default team;

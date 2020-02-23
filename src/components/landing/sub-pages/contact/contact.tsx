@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {Layout, Button, Icon} from "antd";
+import {Layout, Button, Icon, Menu} from "antd";
 
 interface StateProps {
 
@@ -162,6 +162,7 @@ export const Contact: React.FC = (props: ContainerProps) => {
                 backgroundColor: '#F06827',
                 fontFamily: 'Rockwell',
               }}
+              onClick={()=> window.open("mailto:hello@startup-people.com?subject=Hello StartUp-People", "_blank")}
             >
               <Icon
                 type="mail"

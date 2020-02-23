@@ -3,9 +3,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from "redux";
 
-import LandingView from '../../components/landing/landing';
-
 import { ApplicationState } from "../../redux/reducers";
+
+import ProfessionalSignUpView from "../../components/ProfessionalSignUp/ProfessionalSignUp";
 
 interface StateProps {
 
@@ -17,10 +17,10 @@ interface DispatchProps {
 
 type ContainerProps = DispatchProps & StateProps
 
-class Landing extends React.Component<ContainerProps, StateProps> {
+class ProfessionalSignUp extends React.Component<ContainerProps, StateProps> {
   render(): React.ReactElement<any, string | React.JSXElementConstructor<any>> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
     return (
-      <LandingView />
+      <ProfessionalSignUpView />
     )
   }
 }
@@ -34,8 +34,8 @@ MapStateToProps = (state: ApplicationState): StateProps => ({
 
 });
 
-export const LandingPage = connect(
+export const ProfessionalSignUpPage = connect(
   MapStateToProps,
   // @ts-ignore
   mapDispatchToProps
-)(Landing);
+)(ProfessionalSignUp);

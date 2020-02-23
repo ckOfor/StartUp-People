@@ -1,39 +1,24 @@
 // react
 import React, { useState } from 'react';
 
-// third-party library
-import {Layout, Form, Menu, Icon} from 'antd';
+import { Layout, Form, Menu, Icon } from 'antd';
+import { history } from '../../../src/redux/store';
 
 const { Header } = Layout;
+const { SubMenu } = Menu;
 
-// @ts-ignore
-export const HeaderPage: React.FC = (props: Props) => {
-	const [hasAgreed, setHasAgreed] = useState(false);
- 
-//   <!-- Load Facebook SDK for JavaScript -->
-// 	<div id="fb-root"></div>
-//   <script>
-//   window.fbAsyncInit = function() {
-//     FB.init({
-//       xfbml            : true,
-//       version          : 'v6.0'
-//     });
-//   };
-//
-//   (function(d, s, id) {
-//     var js, fjs = d.getElementsByTagName(s)[0];
-//     if (d.getElementById(id)) return;
-//     js = d.createElement(s); js.id = id;
-//     js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
-//     fjs.parentNode.insertBefore(js, fjs);
-//   }(document, 'script', 'facebook-jssdk'));</script>
-//
-// <!-- Your customer chat code -->
-// <div class="fb-customerchat"
-// attribution=setup_tool
-// page_id="333386090756262">
-// </div>
-	
+
+interface StateProps {
+
+}
+
+interface Props {
+
+}
+
+type ContainerProps = Props & StateProps
+
+export const HeaderPage: React.FC = (props: ContainerProps) => {
 	return (
 		<Header
       style={{
@@ -66,20 +51,18 @@ export const HeaderPage: React.FC = (props: Props) => {
           }}
           onClick={() => window.location.reload()}
           component={() => (
-            <h1
+            <img
               style={{
-                fontFamily: 'Rockwell',
-                color: '#F06827',
+                height: 80
               }}
-            >
-              StartUp-People
-            </h1>
+              src={require(`../../assets/logo.png`)}
+            />
           )}
         />
         
         <Menu.Item
           key="0"
-          // onClick={() => showHelpModal()}
+          onClick={()=> window.open("mailto:hello@startup-people.com?subject=I have attached my  CV!", "_blank")}
         >
           <Icon
             type="home"
@@ -89,33 +72,77 @@ export const HeaderPage: React.FC = (props: Props) => {
   
         <Menu.Item
           key="1"
-          // onClick={() => showHelpModal()}
+          onClick={()=> window.open("mailto:hello@startup-people.com?subject=I need Help!", "_blank")}
         >
           <Icon
             type="home"
           />
           Help
         </Menu.Item>
-        
-        <Menu.Item
-          key="2"
-          // onClick={() => showRavrModal('signUp')}
+  
+        <SubMenu
+          title={
+            <span className="submenu-title-wrapper">
+              <Icon
+                type="user"
+              />
+              Professionals
+            </span>
+          }
         >
-          <Icon
-            type="user-add"
-          />
-          Sign up
-        </Menu.Item>
-        
-        <Menu.Item
-          key="3"
-          // onClick={() => showRavrModal('logIn')}
+          <Menu.Item
+            key="2"
+            onClick={() => history.push('/professional/create')}
+          >
+            <Icon
+              type="user-add"
+            />
+            Sign up
+          </Menu.Item>
+  
+          <Menu.Item
+            key="3"
+            // onClick={() => showRavrModal('logIn')}
+          >
+            <Icon
+              type="login"
+            />
+            Log in
+          </Menu.Item>
+        </SubMenu>
+  
+        <SubMenu
+          title={
+            <span className="submenu-title-wrapper">
+              <Icon
+                type="usergroup-add"
+              />
+              Companies
+            </span>
+          }
         >
-          <Icon
-            type="login"
-          />
-          Log in
-        </Menu.Item>
+          <Menu.Item
+            key="4"
+            // onClick={() => showRavrModal('signUp')}
+          >
+            <Icon
+              type="user-add"
+            />
+            Sign up
+          </Menu.Item>
+    
+          <Menu.Item
+            key="5"
+            // onClick={() => showRavrModal('logIn')}
+          >
+            <Icon
+              type="login"
+            />
+            Log in
+          </Menu.Item>
+        </SubMenu>
+
+
       </Menu>
    
 		</Header>

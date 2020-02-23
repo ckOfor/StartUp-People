@@ -54,7 +54,7 @@ export const Founder: React.FC = (props: ContainerProps) => {
             src={require('../../../../assets/olive.png')}
           />
           
-          <h1
+          <h6
             style={{
               color: '#433a59',
               fontFamily: 'Rockwell',
@@ -68,11 +68,12 @@ export const Founder: React.FC = (props: ContainerProps) => {
               style={{
                 color: '#767676',
                 fontFamily: 'Rockwell',
+                marginTop: '3%',
               }}
             >
               - Olive O.
             </h6>
-          </h1>
+          </h6>
         
         </div>
       
@@ -108,7 +109,7 @@ export const Founder: React.FC = (props: ContainerProps) => {
             src={require('../../../../assets/ada.png')}
           />
           
-          <h1
+          <h6
             style={{
               color: '#433a59',
               fontFamily: 'Rockwell',
@@ -116,17 +117,18 @@ export const Founder: React.FC = (props: ContainerProps) => {
               width: '100%',
             }}
           >
-            C.O.O - Chief Executive Officer
+            C.E.O - Chief Executive Officer
             
             <h6
               style={{
                 color: '#767676',
                 fontFamily: 'Rockwell',
+                marginTop: '3%',
               }}
             >
               - Ada O.
             </h6>
-          </h1>
+          </h6>
         
         </div>
       
@@ -161,7 +163,7 @@ export const Founder: React.FC = (props: ContainerProps) => {
             src={require('../../../../assets/chinedu.png')}
           />
           
-          <h1
+          <h6
             style={{
               color: '#433a59',
               fontFamily: 'Rockwell',
@@ -170,18 +172,19 @@ export const Founder: React.FC = (props: ContainerProps) => {
             }}
           >
   
-            C.O.O - Chief Technical Officer
+            C.T.O - Chief Technical Officer
   
             <h6
               style={{
                 color: '#767676',
                 fontFamily: 'Rockwell',
+                marginTop: '3%',
               }}
             >
               - Chinedu O.
             </h6>
             
-          </h1>
+          </h6>
         
         </div>
       
