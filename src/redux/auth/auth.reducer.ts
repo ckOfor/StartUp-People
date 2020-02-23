@@ -9,8 +9,15 @@ import {
   FACEBOOK_AUTH_SUCCESS,
   GOOGLE_AUTH,
   GOOGLE_AUTH_FAILURE,
-  GOOGLE_AUTH_SUCCESS, SAVE_AUTH_EMAIL,
-  SAVE_AUTH_FULL_NAME, SAVE_AUTH_TYPE, SAVE_PICTURE_URL, SAVE_USER_ID, SAVE_USER_TYPE
+  GOOGLE_AUTH_SUCCESS,
+  SAVE_AUTH_EMAIL,
+  SAVE_AUTH_FULL_NAME,
+  SAVE_AUTH_TYPE,
+  SAVE_PICTURE_URL,
+  SAVE_USER_ID,
+  SAVE_USER_TYPE,
+  SEND_EMAIL_VERIFICATION_LINK,
+  SEND_EMAIL_VERIFICATION_LINK_FAILURE, SEND_EMAIL_VERIFICATION_LINK_SUCCESS
 } from '../auth';
 
 
@@ -72,6 +79,7 @@ function authReducer(state = INITIAL_STATE, action: AuthTypes): AuthState {
     case EMAIL_AUTH_SIGN_UP:
     case FACEBOOK_AUTH:
     case GOOGLE_AUTH:
+    case SEND_EMAIL_VERIFICATION_LINK:
       return {
         ...state,
         loading: true,
@@ -83,6 +91,8 @@ function authReducer(state = INITIAL_STATE, action: AuthTypes): AuthState {
     case FACEBOOK_AUTH_SUCCESS:
     case GOOGLE_AUTH_FAILURE:
     case GOOGLE_AUTH_SUCCESS:
+    case SEND_EMAIL_VERIFICATION_LINK_FAILURE:
+    case SEND_EMAIL_VERIFICATION_LINK_SUCCESS:
       return {
         ...state,
         loading: false,

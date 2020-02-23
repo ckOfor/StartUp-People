@@ -25,7 +25,11 @@ import {
   SAVE_AUTH_PASSWORD,
   TOGGLE_AUTH_PASSWORD_MODAL,
   SAVE_AUTH_TYPE,
-  SAVE_USER_TYPE, SAVE_PICTURE_URL
+  SAVE_USER_TYPE,
+  SAVE_PICTURE_URL,
+  SEND_EMAIL_VERIFICATION_LINK,
+  SEND_EMAIL_VERIFICATION_LINK_FAILURE,
+  SEND_EMAIL_VERIFICATION_LINK_SUCCESS
 } from './auth.types'
 
 export const saveUserId = (payload: string) => ({
@@ -278,4 +282,60 @@ export const facebookAuthAsync = (userType: string): ThunkAction<
     setTimeout(hide, 2500);
     showNotification("Form Validation!", error.toString(), "error");
   }
+}
+
+export const sendEmailVerificationLink = () => ({
+  type: SEND_EMAIL_VERIFICATION_LINK
+});
+
+export const sendEmailVerificationLinkFailure = () => ({
+  type: SEND_EMAIL_VERIFICATION_LINK_FAILURE
+});
+
+export const sendEmailVerificationLinkSuccess = () => ({
+  type: SEND_EMAIL_VERIFICATION_LINK_SUCCESS
+});
+
+/**
+ * Thunks
+ */
+export const sendEmailVerificationLinkAsync = (): ThunkAction<
+  void,
+  ApplicationState,
+  null,
+  Action<any>
+  > => async (dispatch, getState) => {
+  const email = getState().auth.email
+  
+  dispatch(sendEmailVerificationLink())
+  
+  const hide = message.loading('Loading...', 0);
+  
+  
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+      // User is signed in.
+      console.log(user)
+      user.sendEmailVerification().then((success) => {
+        // Email sent.
+        if(user !== null) {
+          setTimeout(hide, 1000);
+          dispatch(sendEmailVerificationLinkSuccess())
+          showNotification("Success!", `We have also sent a verification link to ${email}`, "success");
+        } else {
+          showNotification("Error", 'No user is signed in', "error");
+        }
+      }).catch((error: any) => {
+        console.log(error)
+        // An error happened.
+        dispatch(sendEmailVerificationLinkFailure())
+        setTimeout(hide, 2500);
+        showNotification("Form Validation!", error.toString(), "error");
+      });
+    } else {
+      // No user is signed in.
+      console.log(user)
+    }
+  });
+  
 }

@@ -7,7 +7,7 @@ import { ApplicationState } from "../../redux/reducers";
 import {createUserWithEmailAsync, facebookAuthAsync, googleAuthAsync} from "../../redux/auth";
 import {signUpWithEmailParams } from "../../redux/auth/auth.actions.d";
 
-import ProfessionalSignUpView from "../../components/ProfessionalSignUp/ProfessionalSignUp";
+import ProfessionalSignUpView from "../../components/professionalSignUp/professionalSignUp";
 
 interface StateProps {
   isLoading: boolean
