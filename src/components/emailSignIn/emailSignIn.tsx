@@ -105,7 +105,6 @@ export const EmailSignIn: React.FC = (props: ContainerProps) => {
             type="facebook"
             style={{
               fontSize: '20px',
-              marginTop: 5
             }}
           />
         </Button>
@@ -126,7 +125,6 @@ export const EmailSignIn: React.FC = (props: ContainerProps) => {
             type="google"
             style={{
               fontSize: '20px',
-              marginTop: 5
             }}
           />
         </Button>

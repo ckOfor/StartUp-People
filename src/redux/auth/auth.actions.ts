@@ -2,6 +2,7 @@ import { ThunkAction } from "redux-thunk";
 import { Action } from "redux";
 import { message, notification } from "antd";
 import * as firebase from "firebase/app";
+import axios from 'axios'
 
 import app from "../../config/Firebase";
 
@@ -21,7 +22,7 @@ import {
   FACEBOOK_AUTH_FAILURE,
   FACEBOOK_AUTH_SUCCESS,
   SAVE_USER_ID,
-  SAVE_AUTH_FULL_NAME,
+  SAVE_AUTH_NAME,
   SAVE_AUTH_EMAIL,
   SAVE_AUTH_PASSWORD,
   TOGGLE_AUTH_PASSWORD_MODAL,
@@ -34,16 +35,23 @@ import {
   EMAIL_AUTH_SIGN_IN,
   EMAIL_AUTH_SIGN_IN_SUCCESS,
   EMAIL_AUTH_SIGN_IN_FAILURE,
-  FORGOT_PASSWORD, FORGOT_PASSWORD_FAILURE, FORGOT_PASSWORD_SUCCESS
+  FORGOT_PASSWORD,
+  FORGOT_PASSWORD_FAILURE,
+  FORGOT_PASSWORD_SUCCESS,
+  CREATE_USER,
+  CREATE_USER_FAILURE,
+  CREATE_USER_SUCCESS, SIGN_IN_USER, SIGN_IN_USER_FAILURE, SIGN_IN_USER_SUCCESS
 } from './auth.types'
+
+const URL = process.env.REACT_APP_DATABASE_URL
 
 export const saveUserId = (payload: string) => ({
   type: SAVE_USER_ID,
   payload
 });
 
-export const saveAuthFullName = (payload: string) => ({
-  type: SAVE_AUTH_FULL_NAME,
+export const saveAuthName = (payload: string) => ({
+  type: SAVE_AUTH_NAME,
   payload
 });
 
@@ -120,7 +128,7 @@ export const createUserWithEmailAsync = (data: signUpWithEmailParams): ThunkActi
   dispatch(signUpWithEmail())
   
   const hide = message.loading('Loading...', 0);
-  const { email, password, fullName, authType, userType } = data
+  const { email, password, name, authType, userType } = data
   
   try {
     app
@@ -128,27 +136,28 @@ export const createUserWithEmailAsync = (data: signUpWithEmailParams): ThunkActi
       .createUserWithEmailAndPassword(email, password)
       .then(result => {
         console.log(result)
-        setTimeout(hide, 2500);
+        setTimeout(hide, 1000);
         
         // @ts-ignore
         dispatch(saveUserId(result.user.uid.toString()))
-        dispatch(saveAuthFullName(fullName))
+        dispatch(saveAuthName(name))
         dispatch(saveAuthEmail(email))
         dispatch(saveAuthType(authType))
         dispatch(saveUserType(userType))
         
         dispatch(signUpWithEmailSuccess())
+        dispatch(createUserAsync(password))
       })
       .catch(error => {
         dispatch(signUpWithEmailFailure())
-        setTimeout(hide, 2500);
+        setTimeout(hide, 1000);
         console.log(error)
         showNotification("Error!", error.toString(), "error");
       });
   } catch (error) {
     console.log(error)
     dispatch(signUpWithEmailFailure())
-    setTimeout(hide, 2500);
+    setTimeout(hide, 1000);
     showNotification("Error!", error.toString(), "error");
   }
 }
@@ -186,25 +195,26 @@ export const sigInUserWithEmailAsync = (data: signInWithEmailParams): ThunkActio
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then(result => {
-        console.log(result)
-        setTimeout(hide, 2500);
+        console.log(result);
+        setTimeout(hide, 1000);
         
         // @ts-ignore
         dispatch(saveUserId(result.user.uid.toString()))
         dispatch(saveAuthEmail(email))
         
         dispatch(signInWithEmailSuccess())
+        dispatch(signInUserAsync(password))
       })
       .catch(error => {
         dispatch(signInWithEmailFailure())
-        setTimeout(hide, 2500);
+        setTimeout(hide, 1000);
         console.log(error)
         showNotification("Error!", error.toString(), "error");
       });
   } catch (error) {
     console.log(error)
     dispatch(signInWithEmailFailure())
-    setTimeout(hide, 2500);
+    setTimeout(hide, 1000);
     showNotification("Error!", error.toString(), "error");
   }
 }
@@ -230,14 +240,14 @@ export const googleAuthAsync = (data: socialAuthParams): ThunkAction<
   null,
   Action<any>
   > => async (dispatch, getState) => {
-  console.log('called')
   dispatch(signInWithGoogle())
   
   const hide = message.loading('Loading...', 0);
   
   const provider = new firebase.auth.GoogleAuthProvider();
   
-  const { userType } = data
+  const { userType, actionType } = data
+  console.log('called', actionType)
   
   try {
     firebase
@@ -245,36 +255,39 @@ export const googleAuthAsync = (data: socialAuthParams): ThunkAction<
       .signInWithPopup(provider)
       .then((result) => {
         dispatch(signInWithGoogleSuccess())
-        setTimeout(hide, 2500);
+        setTimeout(hide, 1000);
         console.log(result.user)
         // @ts-ignore
         dispatch(saveUserId(result.user.uid.toString()))
         // @ts-ignore
-        dispatch(saveAuthFullName(result.user.displayName.toString()))
+        dispatch(saveAuthName(result.user.displayName.toString()))
         // @ts-ignore
         dispatch(saveAuthEmail(result.user.email.toString()))
         dispatch(saveAuthType('google'))
         dispatch(saveUserType(userType))
         // @ts-ignore
         dispatch(savePictureURL(result.user.photoURL.toString()))
-        
-        // console.log(result.user.uid)
+  
         firebase.auth().signOut().then(() => {
           // Sign-out successful.
         }).catch(function(error) {
           // An error happened.
         });
         
+        return actionType === "signUp" ?
+          // @ts-ignore
+          dispatch(createUserAsync(result.user.uid.toString())) : dispatch(signInUserAsync(result.user.uid.toString()))
+        
       })
       .catch((error) => {
         dispatch(signInWithGoogleFailure())
         console.log(error)
-        setTimeout(hide, 2500);
+        setTimeout(hide, 1000);
         showNotification("Error!", error.toString(), "error");
       })
   } catch (error) {
     dispatch(signInWithGoogleFailure())
-    setTimeout(hide, 2500);
+    setTimeout(hide, 1000);
     showNotification("Form Validation!", error.toString(), "error");
   }
 }
@@ -307,7 +320,7 @@ export const facebookAuthAsync = (data: socialAuthParams): ThunkAction<
   
   const provider = new firebase.auth.FacebookAuthProvider();
   
-  const { userType } = data
+  const { userType, actionType } = data
   
   try {
     firebase
@@ -315,12 +328,12 @@ export const facebookAuthAsync = (data: socialAuthParams): ThunkAction<
       .signInWithPopup(provider)
       .then((result) => {
         dispatch(signInWithFacebookSuccess())
-        setTimeout(hide, 2500);
+        setTimeout(hide, 1000);
         console.log(result.user)
         // @ts-ignore
         dispatch(saveUserId(result.user.uid.toString()))
         // @ts-ignore
-        dispatch(saveAuthFullName(result.user.displayName.toString()))
+        dispatch(saveAuthName(result.user.displayName.toString()))
         // @ts-ignore
         dispatch(saveAuthEmail(result.user.email.toString()))
         dispatch(saveAuthType('facebook'))
@@ -334,17 +347,21 @@ export const facebookAuthAsync = (data: socialAuthParams): ThunkAction<
         }).catch(function(error) {
           // An error happened.
         });
+  
+        return actionType === "signUp" ?
+          // @ts-ignore
+          dispatch(createUserAsync(result.user.uid.toString())) : dispatch(signInUserAsync(result.user.uid.toString()))
         
       })
       .catch((error) => {
         dispatch(signInWithFacebookFailure())
         console.log(error)
-        setTimeout(hide, 2500);
+        setTimeout(hide, 1000);
         showNotification("Error!", error.toString(), "error");
       })
   } catch (error) {
     dispatch(signInWithFacebookFailure())
-    setTimeout(hide, 2500);
+    setTimeout(hide, 1000);
     showNotification("Form Validation!", error.toString(), "error");
   }
 }
@@ -394,7 +411,7 @@ export const sendEmailVerificationLinkAsync = (): ThunkAction<
         console.log(error)
         // An error happened.
         dispatch(sendEmailVerificationLinkFailure())
-        setTimeout(hide, 2500);
+        setTimeout(hide, 1000);
         showNotification("Form Validation!", error.toString(), "error");
       });
     } else {
@@ -437,19 +454,133 @@ export const forgotPasswordAsync = (email: string): ThunkAction<
       .sendPasswordResetEmail(email)
       .then(() => {
         dispatch(forgotPasswordSuccess())
-        setTimeout(hide, 2500);
+        setTimeout(hide, 1000);
         showNotification("Success!", 'Woohoo! check your mail', "success");
       })
       .catch((error) => {
         dispatch(forgotPasswordFailure())
-        setTimeout(hide, 2500);
+        setTimeout(hide, 1000);
         showNotification("Error", error.toString(), "error");
       })
     // this.props.history.push("/login");
   } catch (error) {
     dispatch(forgotPasswordFailure())
-    setTimeout(hide, 2500);
+    setTimeout(hide, 1000);
     showNotification("Error", error.toString(), "error");
   }
+}
+
+
+export const createUser = () => ({
+  type: CREATE_USER
+});
+
+export const createUserFailure = () => ({
+  type: CREATE_USER_FAILURE
+});
+
+export const createUserSuccess = () => ({
+  type: CREATE_USER_SUCCESS
+});
+
+/**
+ * Thunks
+ */
+export const createUserAsync = (password: string): ThunkAction<
+  void,
+  ApplicationState,
+  null,
+  Action<any>
+  > => async (dispatch, getState) => {
+  dispatch(createUser())
+  
+  const hide = message.loading('Creating account...', 0);
+  
+  const state = getState()
+  const name = state.auth.name
+  const pictureURL = state.auth.pictureURL
+  const email = state.auth.email
+  const authType = state.auth.authType
+  const userType = state.auth.userType
+  
+  axios.post(`${URL}/users`,
+    {
+      name,
+      pictureURL,
+      email,
+      password,
+      userType,
+      authType,
+    })
+    .then((response) => {
+      setTimeout(hide, 1000);
+      console.log(response)
+      showNotification("Error", `${response.data.message}`, "success");
+      dispatch(createUserSuccess())
+      // dispatch(updateUserAsync())
+    })
+    .catch((error) => {
+      setTimeout(hide, 1000);
+      dispatch(createUserFailure())
+      console.log(error)
+      if (error.response === undefined) {
+        showNotification("Error", `${error.message}`, "error");
+      } else {
+        showNotification("Error", `${error.response.data.message}`, "error");
+      }
+    });
+}
+
+export const signInUser = () => ({
+  type: SIGN_IN_USER
+});
+
+export const signInUserFailure = () => ({
+  type: SIGN_IN_USER_FAILURE
+});
+
+export const signInUserSuccess = () => ({
+  type: SIGN_IN_USER_SUCCESS
+});
+
+
+/**
+ * Thunks
+ */
+export const signInUserAsync = (password: string): ThunkAction<
+  void,
+  ApplicationState,
+  null,
+  Action<any>
+  > => async (dispatch, getState) => {
+  dispatch(signInUser())
+  
+  const hide = message.loading('Fetching user details...', 0);
+  
+  const state = getState()
+  const email = state.auth.email
+  
+  axios.post(`${URL}/users/retrieve`,
+    {
+      email,
+      password,
+    })
+    .then((response) => {
+      setTimeout(hide, 1000);
+      console.log(response)
+      showNotification("Error", `${response.data.message}`, "success");
+      dispatch(signInUserSuccess())
+      // dispatch(updateUserAsync())
+    })
+    .catch((error) => {
+      setTimeout(hide, 1000);
+      dispatch(signInUserFailure())
+      console.log(error)
+      if (error.response === undefined) {
+        showNotification("Error", `${error.message}`, "error");
+      } else {
+        showNotification("Error", `${error.response.data.message}`, "error");
+      }
+    });
 }
 

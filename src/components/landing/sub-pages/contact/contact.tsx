@@ -110,7 +110,6 @@ export const Contact: React.FC = (props: ContainerProps) => {
                 type="twitter"
                 style={{
                   fontSize: '20px',
-                  marginTop: 4
                 }}
               />
             </Button>
@@ -129,7 +128,6 @@ export const Contact: React.FC = (props: ContainerProps) => {
                 type="instagram"
                 style={{
                   fontSize: '20px',
-                  marginTop: 4
                 }}
               />
             </Button>
@@ -148,7 +146,6 @@ export const Contact: React.FC = (props: ContainerProps) => {
                 type="linkedin"
                 style={{
                   fontSize: '20px',
-                  marginTop: 4
                 }}
               />
             </Button>
@@ -168,7 +165,6 @@ export const Contact: React.FC = (props: ContainerProps) => {
                 type="mail"
                 style={{
                   fontSize: '20px',
-                  marginTop: 4
                 }}
               />
             </Button>
@@ -187,7 +183,6 @@ export const Contact: React.FC = (props: ContainerProps) => {
                 type="skype"
                 style={{
                   fontSize: '20px',
-                  marginTop: 4
                 }}
               />
             </Button>
@@ -206,7 +201,6 @@ export const Contact: React.FC = (props: ContainerProps) => {
                 type="phone"
                 style={{
                   fontSize: '20px',
-                  marginTop: 4
                 }}
               />
             </Button>

@@ -60,7 +60,7 @@ export const CompanySignUp: React.FC = (props: ContainerProps) => {
   const handleSignUpWithEmail = (e: any) => {
     e.preventDefault();
     setAuthType('email')
-    props.form.validateFields(["fullName", "email", "password", "confirmPassword"], (err: any, values: any) => {
+    props.form.validateFields(["name", "email", "password", "confirmPassword"], (err: any, values: any) => {
       if (!err) {
         const newValues = {
           ...values,
@@ -228,7 +228,7 @@ export const CompanySignUp: React.FC = (props: ContainerProps) => {
                   width: window.innerWidth < 1100 ? '100%' : '70%',
                 }}
               >
-                {getFieldDecorator('fullName', {
+                {getFieldDecorator('name', {
                   rules: [{
                     min: 1,
                     message: 'Please enter your full name'
@@ -239,7 +239,7 @@ export const CompanySignUp: React.FC = (props: ContainerProps) => {
                   }],
                 })(
                   <Input
-                    name={'fullName'}
+                    name={'name'}
                     disabled={isLoading}
                     allowClear
                     placeholder="Jane Doe"

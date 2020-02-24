@@ -1,5 +1,5 @@
 export interface signUpWithEmailParams {
-  fullName: string
+  name: string
   email: string
   password: string
   authType: string
@@ -22,7 +22,7 @@ export interface AuthState {
   phoneNumber: string
   countryCode: string
   email: string
-  fullName: string
+  name: string
   password: string
   passwordModal: boolean
   userType: string
