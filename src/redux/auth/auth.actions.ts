@@ -400,7 +400,7 @@ export const sendEmailVerificationLinkAsync = (): ThunkAction<
         if(user !== null) {
           setTimeout(hide, 1000);
           dispatch(sendEmailVerificationLinkSuccess())
-          showNotification("Success!", `We have sent a verification link to ${email}`, "success");
+          showNotification("Success!", `We have sent a verification link to ${user.email}`, "success");
         } else {
           showNotification("Error", 'No user is signed in', "error");
         }
