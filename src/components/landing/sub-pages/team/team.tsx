@@ -70,7 +70,7 @@ export const Team: React.FC = (props: ContainerProps) => {
                 onClick={()=> window.open("mailto:hellostartupteam@gmail.com?subject=I have attached my  CV!", "_blank")}
                 style={{
                   color: '#fff',
-                  width: 120,
+                  width: '90%',
                   height: 50,
                   backgroundColor: '#F06827',
                   borderRadius: 8,

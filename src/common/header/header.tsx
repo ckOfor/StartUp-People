@@ -22,7 +22,7 @@ export const HeaderPage: React.FC = (props: ContainerProps) => {
 		<Header
       style={{
         zIndex: 1,
-        width: '100%',
+        width: '90%',
         height: 90,
         backgroundColor: 'transparent',
       }}
@@ -34,8 +34,9 @@ export const HeaderPage: React.FC = (props: ContainerProps) => {
         // defaultSelectedKeys={['0']}
         style={{
           lineHeight: '90px',
-          width: '100%',
-          alignSelf: 'center',
+          width: '90%',
+          // alignSelf: 'center',
+          // justifyContent: "flex-end",
           backgroundColor: 'transparent',
           borderColor: 'transparent',
         }}
@@ -44,10 +45,15 @@ export const HeaderPage: React.FC = (props: ContainerProps) => {
   
         <Icon
           style={{
-            marginLeft: '20%',
-            marginRight: window.innerWidth < 1000 ? '0%' : '20%',
+            marginLeft: '10%',
+            marginRight: window.innerWidth < 500 ? '45%' : '35%',
           }}
-          onClick={() => window.location.reload()}
+          onClick={() => {
+            setTimeout(() => {
+              history.push('/')
+              window.location.reload();
+            }, 1000)
+          }}
           component={() => (
             <img
               style={{

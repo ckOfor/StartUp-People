@@ -6,6 +6,7 @@ import { history } from "../../redux/store";
 import { signUpWithEmailParams, socialAuthParams } from "../../redux/auth/auth.actions.d";
 
 import backgroundImage from '../../assets/bkImg.png';
+import HeaderView from "../../common/header/header";
 
 interface StateProps {
   isLoading: boolean
@@ -112,6 +113,8 @@ export const CompanySignUp: React.FC = (props: ContainerProps) => {
         backgroundRepeat: 'no-repeat',
       }}
     >
+  
+      {window.innerWidth < 1100 && <HeaderView />}
       
       <div
         className="adminSignInPageApp"
@@ -132,34 +135,38 @@ export const CompanySignUp: React.FC = (props: ContainerProps) => {
             flexDirection: 'column'
           }}
         >
-          
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-between'
-            }}
-          >
-            
-            <Icon
-              onClick={() => {
-                setTimeout(() => {
-                  history.push('/')
-                  window.location.reload();
-                }, 1000)
-              }}
-              component={() => (
-                <img
-                  style={{
-                    height: 80,
-                    margin: '10%'
+  
+          {
+            window.innerWidth > 1100 && (
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between'
+                }}
+              >
+        
+                <Icon
+                  onClick={() => {
+                    setTimeout(() => {
+                      history.push('/')
+                      window.location.reload();
+                    }, 1000)
                   }}
-                  src={require(`../../assets/logo.png`)}
+                  component={() => (
+                    <img
+                      style={{
+                        height: 80,
+                        margin: '10%'
+                      }}
+                      src={require(`../../assets/logo.png`)}
+                    />
+                  )}
                 />
-              )}
-            />
-          
-          </div>
+      
+              </div>
+            )
+          }
           
           <div
             className="adminSignInPageApp"
@@ -218,7 +225,7 @@ export const CompanySignUp: React.FC = (props: ContainerProps) => {
               
               <Form.Item
                 style={{
-                  width: window.innerWidth < 500 ? '100%' : '70%',
+                  width: window.innerWidth < 1100 ? '100%' : '70%',
                 }}
               >
                 {getFieldDecorator('fullName', {
@@ -272,7 +279,7 @@ export const CompanySignUp: React.FC = (props: ContainerProps) => {
               
               <Form.Item
                 style={{
-                  width: window.innerWidth < 500 ? '100%' : '70%',
+                  width: window.innerWidth < 1100 ? '100%' : '70%',
                 }}
               >
                 {getFieldDecorator('email', {
@@ -322,7 +329,7 @@ export const CompanySignUp: React.FC = (props: ContainerProps) => {
               
               <Form.Item
                 style={{
-                  width: window.innerWidth < 500 ? '100%' : '70%',
+                  width: window.innerWidth < 1100 ? '100%' : '70%',
                 }}
               >
                 {getFieldDecorator('password', {
@@ -378,7 +385,7 @@ export const CompanySignUp: React.FC = (props: ContainerProps) => {
               
               <Form.Item
                 style={{
-                  width: window.innerWidth < 500 ? '100%' : '70%',
+                  width: window.innerWidth < 1100 ? '100%' : '70%',
                 }}
               >
                 {getFieldDecorator('confirmPassword', {
@@ -455,7 +462,7 @@ export const CompanySignUp: React.FC = (props: ContainerProps) => {
           style={{
             display: 'flex',
             minHeight: '100vh',
-            width: window.innerWidth < 500 ? '0%' : '50%',
+            width: window.innerWidth < 1100 ? '0%' : '50%',
             justifyContent: 'center',
             alignItems: 'center',
             backgroundColor: '#707E91'

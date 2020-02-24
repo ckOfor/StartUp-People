@@ -6,6 +6,7 @@ import { history } from "../../redux/store";
 import { signInWithEmailParams, socialAuthParams } from "../../redux/auth/auth.actions.d";
 
 import backgroundImage from '../../assets/bkImg.png';
+import HeaderView from "../../common/header/header";
 
 interface StateProps {
   isLoading: boolean
@@ -75,6 +76,63 @@ export const EmailSignIn: React.FC = (props: ContainerProps) => {
     facebookAuthAsync(values)
   }
   
+  const renderSocialButtons = () => {
+    return (
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-around',
+          width:  window.innerWidth < 1100 ? '50%' : '20%',
+        }}
+      >
+    
+        <Button
+          onClick={handleSignInWithFacebook}
+          style={{
+            color: '#fff',
+            width: 50,
+            height: 50,
+            borderRadius: 25,
+            backgroundColor: '#3b5998',
+            fontFamily: 'Rockwell',
+          }}
+          disabled={isLoading}
+        >
+          <Icon
+            type="facebook"
+            style={{
+              fontSize: '20px',
+              marginTop: 5
+            }}
+          />
+        </Button>
+    
+        <Button
+          onClick={handleSignInWithGoogle}
+          style={{
+            color: '#fff',
+            width: 50,
+            height: 50,
+            borderRadius: 25,
+            backgroundColor: '#DB4437',
+            fontFamily: 'Rockwell',
+          }}
+          disabled={isLoading}
+        >
+          <Icon
+            type="google"
+            style={{
+              fontSize: '20px',
+              marginTop: 5
+            }}
+          />
+        </Button>
+      </div>
+    )
+  }
+  
   return (
     <Layout
       style={{
@@ -88,9 +146,9 @@ export const EmailSignIn: React.FC = (props: ContainerProps) => {
         backgroundRepeat: 'no-repeat',
       }}
     >
+      {window.innerWidth < 1100 && <HeaderView />}
       
       <div
-        className="adminSignInPageApp"
         style={{
           display: 'flex',
           minHeight: '100vh',
@@ -100,7 +158,6 @@ export const EmailSignIn: React.FC = (props: ContainerProps) => {
       >
         
         <div
-          className="adminSignInPageApp"
           style={{
             display: 'flex',
             minHeight: '100vh',
@@ -109,90 +166,43 @@ export const EmailSignIn: React.FC = (props: ContainerProps) => {
             flexDirection: 'column'
           }}
         >
+  
+  
+          {
+            window.innerWidth > 1100 && (
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between'
+                }}
+              >
+        
+                <Icon
+                  onClick={() => {
+                    setTimeout(() => {
+                      history.push('/')
+                      window.location.reload();
+                    }, 1000)
+                  }}
+                  component={() => (
+                    <img
+                      style={{
+                        height: 80,
+                        margin: '10%'
+                      }}
+                      src={require(`../../assets/logo.png`)}
+                    />
+                  )}
+                />
+        
+                {window.innerWidth > 500 && renderSocialButtons()}
+      
+              </div>
+            )
+          }
           
           <div
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-between'
-            }}
-          >
-            
-            <Icon
-              onClick={() => {
-                setTimeout(() => {
-                  history.push('/')
-                  window.location.reload();
-                }, 1000)
-              }}
-              component={() => (
-                <img
-                  style={{
-                    height: 80,
-                    margin: '10%'
-                  }}
-                  src={require(`../../assets/logo.png`)}
-                />
-              )}
-            />
-            
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-around',
-                width:  window.innerWidth < 500 ? '100%' : '20%',
-              }}
-            >
-              
-              <Button
-                onClick={handleSignInWithFacebook}
-                style={{
-                  color: '#fff',
-                  width: 50,
-                  height: 50,
-                  borderRadius: 25,
-                  backgroundColor: '#3b5998',
-                  fontFamily: 'Rockwell',
-                }}
-                disabled={isLoading}
-              >
-                <Icon
-                  type="facebook"
-                  style={{
-                    fontSize: '20px',
-                    marginTop: 5
-                  }}
-                />
-              </Button>
-              
-              <Button
-                onClick={handleSignInWithGoogle}
-                style={{
-                  color: '#fff',
-                  width: 50,
-                  height: 50,
-                  borderRadius: 25,
-                  backgroundColor: '#DB4437',
-                  fontFamily: 'Rockwell',
-                }}
-                disabled={isLoading}
-              >
-                <Icon
-                  type="google"
-                  style={{
-                    fontSize: '20px',
-                    marginTop: 5
-                  }}
-                />
-              </Button>
-            </div>
-          
-          </div>
-          
-          <div
-            className="adminSignInPageApp"
             style={{
               display: 'flex',
               width: '100%',
@@ -220,17 +230,7 @@ export const EmailSignIn: React.FC = (props: ContainerProps) => {
                   marginTop: '5%'
                 }}
               >
-                Get in touch with professionals, view messages, save and edit your profile and more. Don't have an account? Create as a <a
-                onClick={() => history.push('/')}
-                href="/professional/create"
-              >
-                Professional
-              </a> or <a
-                onClick={() => history.push('/')}
-                href="/company/create"
-              >
-                Company
-              </a>
+                Get in touch with professionals, view messages, save and edit your profile and more.
               </h6>
               
               <div
@@ -267,7 +267,7 @@ export const EmailSignIn: React.FC = (props: ContainerProps) => {
               
               <Form.Item
                 style={{
-                  width: window.innerWidth < 500 ? '100%' : '70%',
+                  width: window.innerWidth < 1100 ? '100%' : '70%',
                 }}
               >
                 {getFieldDecorator('email', {
@@ -317,7 +317,7 @@ export const EmailSignIn: React.FC = (props: ContainerProps) => {
               
               <Form.Item
                 style={{
-                  width: window.innerWidth < 500 ? '100%' : '70%',
+                  width: window.innerWidth < 1100 ? '100%' : '70%',
                 }}
               >
                 {getFieldDecorator('password', {
@@ -338,15 +338,32 @@ export const EmailSignIn: React.FC = (props: ContainerProps) => {
                   />
                 )}
               </Form.Item>
-              
-              
+  
+              <h6
+                style={{
+                  color: '#767676',
+                  fontFamily: 'Rockwell',
+                }}
+              >
+                <a
+                  style={{
+                    color: '#0c2136',
+                    fontSize: '10',
+                  }}
+                  // onClick={forgotPasswordAsync}
+                >
+                  Forgot password?
+                </a>
+              </h6>
               
               <Form.Item>
                 <Button
                   style={{
                     backgroundColor: '#F06827',
                     color: '#FFFFFF',
-                    marginLeft: 50
+                    marginLeft: window.innerWidth < 1100 ? '0' : '20%',
+                    marginTop: '5%',
+                    width: window.innerWidth < 1100 ? '100%' : '25%',
                   }}
                   size={'large'}
                   disabled={isLoading}
@@ -357,19 +374,40 @@ export const EmailSignIn: React.FC = (props: ContainerProps) => {
                   Sign In
                 </Button>
               </Form.Item>
+  
+              <h6
+                style={{
+                  color: '#767676',
+                  fontFamily: 'Rockwell',
+                  marginTop: '5%'
+                }}
+              >
+                Don't have an account? Create as a <a
+                onClick={() => history.push('/')}
+                href="/professional/create"
+              >
+                Professional
+              </a> or <a
+                onClick={() => history.push('/')}
+                href="/company/create"
+              >
+                Company
+              </a>
+              </h6>
             
             
             </h1>
+  
+            {window.innerWidth < 1100 && renderSocialButtons()}
           </div>
         
         </div>
         
         <div
-          className="adminSignInPageApp"
           style={{
             display: 'flex',
             minHeight: '100vh',
-            width: window.innerWidth < 500 ? '0%' : '50%',
+            width: window.innerWidth < 1100 ? '0%' : '50%',
             justifyContent: 'center',
             alignItems: 'center',
             // backgroundColor: '#707E91'

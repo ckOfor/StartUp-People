@@ -77,7 +77,7 @@ export const Mission: React.FC = (props: ContainerProps) => {
              <Button
                style={{
                  color: '#fff',
-                 width: 120,
+                 width: '90%',
                  height: 50,
                  backgroundColor: '#F06827',
                  borderRadius: 8,
