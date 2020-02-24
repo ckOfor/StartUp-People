@@ -4,29 +4,23 @@ import { connect } from 'react-redux';
 import { Dispatch } from "redux";
 
 import { ApplicationState } from "../../redux/reducers";
-import { sendEmailVerificationLinkAsync } from "../../redux/auth";
 
-import EmailSuccessView from "../../components/emailSuccess";
+import DashboardView from "../../components/dashboard";
 
 interface StateProps {
-  isLoading: boolean
-  email: string
+
 }
 
 interface DispatchProps {
-  sendEmailVerificationLinkAsync: () => void
+
 }
 
 type ContainerProps = DispatchProps & StateProps
 
-class EmailSuccess extends React.Component<ContainerProps, StateProps> {
-  componentDidMount(): void {
-    this.props.sendEmailVerificationLinkAsync()
-  }
-  
+class Dashboard extends React.Component<ContainerProps, StateProps> {
   render(): React.ReactElement<any, string | React.JSXElementConstructor<any>> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
     return (
-      <EmailSuccessView
+      <DashboardView
         {...this.props}
       />
     )
@@ -34,17 +28,16 @@ class EmailSuccess extends React.Component<ContainerProps, StateProps> {
 }
 
 const mapDispatchToProps = (dispatch: Dispatch<any>): DispatchProps => ({
-  sendEmailVerificationLinkAsync: () => dispatch(sendEmailVerificationLinkAsync()),
+
 });
 
 let MapStateToProps: (state: ApplicationState) => StateProps;
 MapStateToProps = (state: ApplicationState): StateProps => ({
-  email: state.auth.email,
   isLoading: state.auth.loading,
 });
 
-export const EmailSuccessPage = connect(
+export const DashboardPage = connect(
   MapStateToProps,
   // @ts-ignore
   mapDispatchToProps
-)(EmailSuccess);
+)(Dashboard);

@@ -156,7 +156,12 @@ export const EmailSuccess: React.FC = (props: ContainerProps) => {
                   marginTop: '5%',
                 }}
               >
-                To continue, go open your email.
+                To continue, go open your email. To login click <a
+                onClick={() => history.push('/')}
+                href="/manage"
+              >
+                here!
+              </a>
               </h6>
             
             </h1>

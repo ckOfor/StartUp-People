@@ -3,9 +3,11 @@ import { Action } from "redux";
 import { message, notification } from "antd";
 import * as firebase from "firebase/app";
 import axios from 'axios'
+import { push } from "connected-react-router";
 
 import app from "../../config/Firebase";
 
+import { saveUser } from "../user";
 import { ApplicationState } from "../reducers";
 import {
   signUpWithEmailParams, signInWithEmailParams, socialAuthParams
@@ -203,7 +205,12 @@ export const sigInUserWithEmailAsync = (data: signInWithEmailParams): ThunkActio
         dispatch(saveAuthEmail(email))
         
         dispatch(signInWithEmailSuccess())
-        dispatch(signInUserAsync(password))
+  
+        // @ts-ignore
+        return result.user.emailVerified
+          ? dispatch(signInUserAsync(password))
+          : dispatch(sendEmailVerificationLinkAsync())
+        
       })
       .catch(error => {
         dispatch(signInWithEmailFailure())
@@ -351,7 +358,6 @@ export const facebookAuthAsync = (data: socialAuthParams): ThunkAction<
         return actionType === "signUp" ?
           // @ts-ignore
           dispatch(createUserAsync(result.user.uid.toString())) : dispatch(signInUserAsync(result.user.uid.toString()))
-        
       })
       .catch((error) => {
         dispatch(signInWithFacebookFailure())
@@ -391,7 +397,7 @@ export const sendEmailVerificationLinkAsync = (): ThunkAction<
   
   dispatch(sendEmailVerificationLink())
   
-  const hide = message.loading('Loading...', 0);
+  const hide = message.loading('Sending...', 0);
   
   
   firebase.auth().onAuthStateChanged(function(user) {
@@ -403,7 +409,7 @@ export const sendEmailVerificationLinkAsync = (): ThunkAction<
         if(user !== null) {
           setTimeout(hide, 1000);
           dispatch(sendEmailVerificationLinkSuccess())
-          showNotification("Success!", `We have also sent a verification link to ${email}`, "success");
+          showNotification("Success!", `We have sent a verification link to ${email}`, "success");
         } else {
           showNotification("Error", 'No user is signed in', "error");
         }
@@ -462,7 +468,6 @@ export const forgotPasswordAsync = (email: string): ThunkAction<
         setTimeout(hide, 1000);
         showNotification("Error", error.toString(), "error");
       })
-    // this.props.history.push("/login");
   } catch (error) {
     dispatch(forgotPasswordFailure())
     setTimeout(hide, 1000);
@@ -494,8 +499,6 @@ export const createUserAsync = (password: string): ThunkAction<
   > => async (dispatch, getState) => {
   dispatch(createUser())
   
-  const hide = message.loading('Creating account...', 0);
-  
   const state = getState()
   const name = state.auth.name
   const pictureURL = state.auth.pictureURL
@@ -513,14 +516,22 @@ export const createUserAsync = (password: string): ThunkAction<
       authType,
     })
     .then((response) => {
-      setTimeout(hide, 1000);
       console.log(response)
       showNotification("Error", `${response.data.message}`, "success");
       dispatch(createUserSuccess())
-      // dispatch(updateUserAsync())
+      dispatch(saveUser(response.data.data))
+  
+      if (authType === "email") {
+        dispatch(push(`/success`))
+      } else {
+        dispatch(push(`/dashboard`))
+      }
+  
+      setTimeout(() => window.location.reload(), 1000)
+      
+      
     })
     .catch((error) => {
-      setTimeout(hide, 1000);
       dispatch(createUserFailure())
       console.log(error)
       if (error.response === undefined) {
@@ -555,7 +566,7 @@ export const signInUserAsync = (password: string): ThunkAction<
   > => async (dispatch, getState) => {
   dispatch(signInUser())
   
-  const hide = message.loading('Fetching user details...', 0);
+  const hide = message.loading('Loading...', 0);
   
   const state = getState()
   const email = state.auth.email
@@ -568,9 +579,11 @@ export const signInUserAsync = (password: string): ThunkAction<
     .then((response) => {
       setTimeout(hide, 1000);
       console.log(response)
-      showNotification("Error", `${response.data.message}`, "success");
+      showNotification("Success", `${response.data.message}`, "success");
       dispatch(signInUserSuccess())
-      // dispatch(updateUserAsync())
+      dispatch(saveUser(response.data.data))
+      dispatch(push(`/dashboard`))
+      setTimeout(() => window.location.reload(), 1000)
     })
     .catch((error) => {
       setTimeout(hide, 1000);
