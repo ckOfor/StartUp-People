@@ -30,7 +30,11 @@ import {
   SAVE_PICTURE_URL,
   SEND_EMAIL_VERIFICATION_LINK,
   SEND_EMAIL_VERIFICATION_LINK_FAILURE,
-  SEND_EMAIL_VERIFICATION_LINK_SUCCESS, EMAIL_AUTH_SIGN_IN, EMAIL_AUTH_SIGN_IN_SUCCESS, EMAIL_AUTH_SIGN_IN_FAILURE
+  SEND_EMAIL_VERIFICATION_LINK_SUCCESS,
+  EMAIL_AUTH_SIGN_IN,
+  EMAIL_AUTH_SIGN_IN_SUCCESS,
+  EMAIL_AUTH_SIGN_IN_FAILURE,
+  FORGOT_PASSWORD, FORGOT_PASSWORD_FAILURE, FORGOT_PASSWORD_SUCCESS
 } from './auth.types'
 
 export const saveUserId = (payload: string) => ({
@@ -398,5 +402,54 @@ export const sendEmailVerificationLinkAsync = (): ThunkAction<
       console.log(user)
     }
   });
-  
 }
+
+export const forgotPassword = () => ({
+  type: FORGOT_PASSWORD
+});
+
+export const forgotPasswordFailure = () => ({
+  type: FORGOT_PASSWORD_FAILURE
+});
+
+export const forgotPasswordSuccess = () => ({
+  type: FORGOT_PASSWORD_SUCCESS
+});
+
+/**
+ * Thunks
+ */
+export const forgotPasswordAsync = (email: string): ThunkAction<
+  void,
+  ApplicationState,
+  null,
+  Action<any>
+  > => async (dispatch, getState) => {
+  console.log('called')
+  dispatch(forgotPassword())
+  
+  const hide = message.loading('Loading...', 0);
+  
+  try {
+    // console.log('got here')
+    const user = await app
+      .auth()
+      .sendPasswordResetEmail(email)
+      .then(() => {
+        dispatch(forgotPasswordSuccess())
+        setTimeout(hide, 2500);
+        showNotification("Success!", 'Woohoo! check your mail', "success");
+      })
+      .catch((error) => {
+        dispatch(forgotPasswordFailure())
+        setTimeout(hide, 2500);
+        showNotification("Error", error.toString(), "error");
+      })
+    // this.props.history.push("/login");
+  } catch (error) {
+    dispatch(forgotPasswordFailure())
+    setTimeout(hide, 2500);
+    showNotification("Error", error.toString(), "error");
+  }
+}
+

@@ -17,6 +17,7 @@ interface Props {
   sigInUserWithEmailAsync: (data: signInWithEmailParams) => void
   googleAuthAsync: (data: socialAuthParams) => void
   facebookAuthAsync: (data: socialAuthParams) => void
+  forgotPasswordAsync: (email: string) => void
 }
 
 type ContainerProps = Props & StateProps
@@ -26,7 +27,7 @@ export const EmailSignIn: React.FC = (props: ContainerProps) => {
   
   const imageUrl = backgroundImage;
   const {
-    isLoading, sigInUserWithEmailAsync, googleAuthAsync, facebookAuthAsync
+    isLoading, sigInUserWithEmailAsync, googleAuthAsync, facebookAuthAsync, forgotPasswordAsync
   } = props;
   const { getFieldDecorator } = props.form;
   const [authType, setAuthType] = useState('email')
@@ -131,6 +132,18 @@ export const EmailSignIn: React.FC = (props: ContainerProps) => {
         </Button>
       </div>
     )
+  }
+  
+  /**
+   * forgotPasswordAsync
+   * @param e
+   */
+  const forgotPassword = (e: any) => {
+    props.form.validateFields((['email']), (err: any, values: any) => {
+      if (!err) {
+        forgotPasswordAsync(values.email)
+      }
+    })
   }
   
   return (
@@ -289,7 +302,6 @@ export const EmailSignIn: React.FC = (props: ContainerProps) => {
                 style={{
                   display: 'flex',
                   flexDirection: "row",
-                  // justifyContent: 'space-evenly'
                 }}
               >
                 <h6
@@ -350,7 +362,7 @@ export const EmailSignIn: React.FC = (props: ContainerProps) => {
                     color: '#0c2136',
                     fontSize: '10',
                   }}
-                  // onClick={forgotPasswordAsync}
+                  onClick={forgotPassword}
                 >
                   Forgot password?
                 </a>
