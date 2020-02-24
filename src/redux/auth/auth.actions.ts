@@ -126,7 +126,6 @@ export const createUserWithEmailAsync = (data: signUpWithEmailParams): ThunkActi
   null,
   Action<any>
   > => async (dispatch, getState) => {
-  console.log(data)
   dispatch(signUpWithEmail())
   
   const hide = message.loading('Loading...', 0);
@@ -137,7 +136,6 @@ export const createUserWithEmailAsync = (data: signUpWithEmailParams): ThunkActi
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then(result => {
-        console.log(result)
         setTimeout(hide, 1000);
         
         // @ts-ignore
@@ -186,7 +184,6 @@ export const sigInUserWithEmailAsync = (data: signInWithEmailParams): ThunkActio
   null,
   Action<any>
   > => async (dispatch, getState) => {
-  console.log(data)
   dispatch(signInWithEmail())
   
   const hide = message.loading('Loading...', 0);
@@ -197,7 +194,6 @@ export const sigInUserWithEmailAsync = (data: signInWithEmailParams): ThunkActio
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then(result => {
-        console.log(result);
         setTimeout(hide, 1000);
         
         // @ts-ignore
@@ -254,7 +250,6 @@ export const googleAuthAsync = (data: socialAuthParams): ThunkAction<
   const provider = new firebase.auth.GoogleAuthProvider();
   
   const { userType, actionType } = data
-  console.log('called', actionType)
   
   try {
     firebase
@@ -263,7 +258,6 @@ export const googleAuthAsync = (data: socialAuthParams): ThunkAction<
       .then((result) => {
         dispatch(signInWithGoogleSuccess())
         setTimeout(hide, 1000);
-        console.log(result.user)
         // @ts-ignore
         dispatch(saveUserId(result.user.uid.toString()))
         // @ts-ignore
@@ -320,7 +314,6 @@ export const facebookAuthAsync = (data: socialAuthParams): ThunkAction<
   null,
   Action<any>
   > => async (dispatch, getState) => {
-  console.log('called')
   dispatch(signInWithFacebook())
   
   const hide = message.loading('Loading...', 0);
@@ -336,7 +329,6 @@ export const facebookAuthAsync = (data: socialAuthParams): ThunkAction<
       .then((result) => {
         dispatch(signInWithFacebookSuccess())
         setTimeout(hide, 1000);
-        console.log(result.user)
         // @ts-ignore
         dispatch(saveUserId(result.user.uid.toString()))
         // @ts-ignore
@@ -403,7 +395,6 @@ export const sendEmailVerificationLinkAsync = (): ThunkAction<
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
       // User is signed in.
-      console.log(user)
       user.sendEmailVerification().then((success) => {
         // Email sent.
         if(user !== null) {
@@ -422,7 +413,7 @@ export const sendEmailVerificationLinkAsync = (): ThunkAction<
       });
     } else {
       // No user is signed in.
-      console.log(user)
+      console.log(user, "No User")
     }
   });
 }
@@ -448,7 +439,6 @@ export const forgotPasswordAsync = (email: string): ThunkAction<
   null,
   Action<any>
   > => async (dispatch, getState) => {
-  console.log('called')
   dispatch(forgotPassword())
   
   const hide = message.loading('Loading...', 0);
@@ -578,7 +568,6 @@ export const signInUserAsync = (password: string): ThunkAction<
     })
     .then((response) => {
       setTimeout(hide, 1000);
-      console.log(response)
       showNotification("Success", `${response.data.message}`, "success");
       dispatch(signInUserSuccess())
       dispatch(saveUser(response.data.data))
